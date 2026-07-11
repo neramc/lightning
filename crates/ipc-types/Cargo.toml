@@ -1,0 +1,34 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Copyright (C) 2026 neramc
+
+[package]
+name = "lightning-ipc-types"
+description = "specta-annotated IPC types — the single source of truth for the TS bindings"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+
+[dependencies]
+chrono = { workspace = true }
+lightning-actions = { workspace = true }
+lightning-core = { workspace = true }
+lightning-platform = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+specta = { workspace = true }
+specta-typescript = { workspace = true, optional = true }
+uuid = { workspace = true }
+
+[features]
+export = ["dep:specta-typescript"]
+os-smoke = []
+
+[[bin]]
+name = "export-bindings"
+path = "src/bin/export_bindings.rs"
+required-features = ["export"]
+
+[lints]
+workspace = true

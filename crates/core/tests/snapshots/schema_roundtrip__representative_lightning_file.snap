@@ -1,0 +1,88 @@
+---
+source: crates/core/tests/schema_roundtrip.rs
+expression: json
+---
+{
+  "schemaVersion": 1,
+  "id": "00000000-0000-0000-0000-000000000001",
+  "name": "Representative",
+  "description": "Pins the .lightning schema",
+  "icon": {
+    "glyph": "⚡",
+    "gradient": "scripting"
+  },
+  "hotkey": "Ctrl+Shift+L",
+  "steps": [
+    {
+      "uuid": "00000000-0000-0000-0000-0000000000a1",
+      "actionId": "text.change_case",
+      "params": {
+        "case": {
+          "kind": "literal",
+          "value": {
+            "type": "text",
+            "value": "uppercase"
+          }
+        },
+        "note": {
+          "kind": "template",
+          "template": "was {{greeting}}"
+        },
+        "source": {
+          "kind": "variable",
+          "name": "greeting"
+        }
+      },
+      "errorPolicy": {
+        "policy": "stop"
+      },
+      "branches": []
+    },
+    {
+      "uuid": "00000000-0000-0000-0000-0000000000b1",
+      "actionId": "control.if",
+      "params": {
+        "op": {
+          "kind": "literal",
+          "value": {
+            "type": "text",
+            "value": "hasValue"
+          }
+        }
+      },
+      "errorPolicy": {
+        "policy": "stop"
+      },
+      "branches": [
+        {
+          "label": "then",
+          "steps": [
+            {
+              "uuid": "00000000-0000-0000-0000-0000000000b2",
+              "actionId": "control.nothing",
+              "params": {},
+              "errorPolicy": {
+                "policy": "retry",
+                "attempts": 2,
+                "backoffMs": 250
+              },
+              "branches": []
+            }
+          ]
+        },
+        {
+          "label": "otherwise",
+          "steps": []
+        }
+      ]
+    }
+  ],
+  "trigger": {
+    "triggerId": "trigger.interval",
+    "config": {
+      "seconds": 300
+    },
+    "enabled": true,
+    "cooldownMs": 2000
+  }
+}

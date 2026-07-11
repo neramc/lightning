@@ -1,0 +1,60 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Copyright (C) 2026 neramc
+
+[package]
+name = "lightning-desktop"
+description = "Thin Tauri shell: setup, command glue, tray, windows"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+
+[lib]
+name = "lightning_desktop"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { workspace = true }
+
+[dependencies]
+lightning-actions = { workspace = true }
+lightning-core = { workspace = true }
+lightning-ipc-types = { workspace = true }
+lightning-platform = { workspace = true }
+lightning-scripting = { workspace = true }
+lightning-store = { workspace = true }
+lightning-triggers = { workspace = true }
+
+serde = { workspace = true }
+serde_json = { workspace = true }
+tauri = { workspace = true }
+tauri-plugin-autostart = { workspace = true }
+tauri-plugin-clipboard-manager = { workspace = true }
+tauri-plugin-deep-link = { workspace = true }
+tauri-plugin-dialog = { workspace = true }
+tauri-plugin-fs = { workspace = true }
+tauri-plugin-global-shortcut = { workspace = true }
+tauri-plugin-notification = { workspace = true }
+tauri-plugin-shell = { workspace = true }
+tauri-plugin-single-instance = { workspace = true }
+tokio = { workspace = true }
+tracing = { workspace = true }
+tracing-appender = { workspace = true }
+tracing-subscriber = { workspace = true }
+uuid = { workspace = true }
+
+[target.'cfg(target_os = "windows")'.dependencies]
+lightning-platform-windows = { workspace = true }
+
+[target.'cfg(target_os = "macos")'.dependencies]
+lightning-platform-macos = { workspace = true }
+
+[target.'cfg(target_os = "linux")'.dependencies]
+lightning-platform-linux = { workspace = true }
+
+[target.'cfg(target_os = "freebsd")'.dependencies]
+lightning-platform-bsd = { workspace = true }
+
+[lints]
+workspace = true

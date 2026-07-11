@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "id": "00000000-0000-0000-0000-000000000002",
+  "name": "Branching",
+  "description": "If the input number beats 3, say big.",
+  "icon": {
+    "glyph": "🔀",
+    "gradient": "controlFlow"
+  },
+  "steps": [
+    {
+      "uuid": "00000000-0000-0000-0000-0000000000b1",
+      "actionId": "test.echo",
+      "params": {
+        "text": {
+          "kind": "literal",
+          "value": { "type": "text", "value": "5" }
+        }
+      }
+    },
+    {
+      "uuid": "00000000-0000-0000-0000-0000000000b2",
+      "actionId": "control.if",
+      "params": {
+        "op": {
+          "kind": "literal",
+          "value": { "type": "text", "value": "greaterThan" }
+        },
+        "value": {
+          "kind": "literal",
+          "value": { "type": "number", "value": 3 }
+        }
+      },
+      "branches": [
+        {
+          "label": "then",
+          "steps": [
+            {
+              "uuid": "00000000-0000-0000-0000-0000000000b3",
+              "actionId": "test.echo",
+              "params": {
+                "text": {
+                  "kind": "literal",
+                  "value": { "type": "text", "value": "big" }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "label": "otherwise",
+          "steps": [
+            {
+              "uuid": "00000000-0000-0000-0000-0000000000b4",
+              "actionId": "test.echo",
+              "params": {
+                "text": {
+                  "kind": "literal",
+                  "value": { "type": "text", "value": "small" }
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

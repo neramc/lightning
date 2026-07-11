@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "00000000-0000-0000-0000-000000000001",
+  "name": "Hello",
+  "description": "Echo a greeting, then uppercase it.",
+  "icon": {
+    "glyph": "⚡",
+    "gradient": "text"
+  },
+  "steps": [
+    {
+      "uuid": "00000000-0000-0000-0000-0000000000a1",
+      "actionId": "test.echo",
+      "params": {
+        "text": {
+          "kind": "literal",
+          "value": { "type": "text", "value": "hello" }
+        }
+      }
+    },
+    {
+      "uuid": "00000000-0000-0000-0000-0000000000a2",
+      "actionId": "test.uppercase"
+    }
+  ]
+}

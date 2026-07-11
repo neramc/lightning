@@ -54,6 +54,7 @@ lightning-scripting = { path = "crates/scripting" }
 lightning-store = { path = "crates/store" }
 lightning-ipc-types = { path = "crates/ipc-types" }
 
+async-trait = "0.1"
 serde = { version = "1", features = ["derive"] }
 serde_json = { version = "1", features = ["preserve_order"] }
 thiserror = "2"
@@ -64,6 +65,7 @@ tokio = { version = "1", features = [
   "sync",
   "time",
   "fs",
+  "io-util",
   "process",
   "signal",
 ] }
@@ -92,7 +94,6 @@ specta-typescript = "0.0.9"
 
 tauri = { version = "2", features = ["tray-icon"] }
 tauri-build = "2"
-tauri-specta = { version = "=2.0.0-rc.21", features = ["derive", "typescript"] }
 tauri-plugin-global-shortcut = "2"
 tauri-plugin-autostart = "2"
 tauri-plugin-single-instance = "2"

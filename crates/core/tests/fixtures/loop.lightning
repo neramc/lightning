@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "id": "00000000-0000-0000-0000-000000000003",
+  "name": "Loop",
+  "description": "Repeat three times, collecting the echoes.",
+  "icon": {
+    "glyph": "🔁",
+    "gradient": "controlFlow"
+  },
+  "steps": [
+    {
+      "uuid": "00000000-0000-0000-0000-0000000000c1",
+      "actionId": "control.repeat",
+      "params": {
+        "count": {
+          "kind": "literal",
+          "value": { "type": "number", "value": 3 }
+        }
+      },
+      "branches": [
+        {
+          "label": "body",
+          "steps": [
+            {
+              "uuid": "00000000-0000-0000-0000-0000000000c2",
+              "actionId": "test.echo",
+              "params": {
+                "text": {
+                  "kind": "template",
+                  "template": "round {{Repeat Index}}"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
