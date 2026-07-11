@@ -32,7 +32,11 @@ pub struct RunLimits {
 
 impl Default for RunLimits {
     fn default() -> Self {
-        Self { max_recursion: 16, loop_cap: 10_000, timeout: None }
+        Self {
+            max_recursion: 16,
+            loop_cap: 10_000,
+            timeout: None,
+        }
     }
 }
 
@@ -79,10 +83,7 @@ impl RunContext {
 
     /// Grant permission classes, builder-style.
     #[must_use]
-    pub fn with_permissions(
-        mut self,
-        classes: impl IntoIterator<Item = PermissionClass>,
-    ) -> Self {
+    pub fn with_permissions(mut self, classes: impl IntoIterator<Item = PermissionClass>) -> Self {
         self.granted.extend(classes);
         self
     }

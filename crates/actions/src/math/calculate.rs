@@ -13,12 +13,17 @@ pub struct Calculate;
 #[async_trait::async_trait]
 impl Action for Calculate {
     fn def(&self) -> ActionDef {
-        ActionDef::pure("math.calculate", Category::Math, "calculator", ContentKind::Number)
-            .with_param(ParamDef::required(
-                "operation",
-                ParamKind::Enum(&["add", "subtract", "multiply", "divide", "modulo", "power"]),
-            ))
-            .with_param(ParamDef::required("operand", ParamKind::Number))
+        ActionDef::pure(
+            "math.calculate",
+            Category::Math,
+            "calculator",
+            ContentKind::Number,
+        )
+        .with_param(ParamDef::required(
+            "operation",
+            ParamKind::Enum(&["add", "subtract", "multiply", "divide", "modulo", "power"]),
+        ))
+        .with_param(ParamDef::required("operand", ParamKind::Number))
     }
 
     async fn execute(&self, ctx: &mut RunContext, input: Content) -> Result<Content, ActionError> {
@@ -74,12 +79,18 @@ mod tests {
     async fn arithmetic() {
         assert_eq!(run("add", 2.0, 3.0).await.unwrap(), Content::Number(5.0));
         assert_eq!(run("divide", 9.0, 3.0).await.unwrap(), Content::Number(3.0));
-        assert_eq!(run("power", 2.0, 10.0).await.unwrap(), Content::Number(1024.0));
+        assert_eq!(
+            run("power", 2.0, 10.0).await.unwrap(),
+            Content::Number(1024.0)
+        );
         assert_eq!(run("modulo", 7.0, 3.0).await.unwrap(), Content::Number(1.0));
     }
 
     #[tokio::test]
     async fn division_by_zero_fails_cleanly() {
-        assert!(matches!(run("divide", 1.0, 0.0).await, Err(ActionError::Failed(_))));
+        assert!(matches!(
+            run("divide", 1.0, 0.0).await,
+            Err(ActionError::Failed(_))
+        ));
     }
 }

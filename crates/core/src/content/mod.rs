@@ -57,9 +57,7 @@ pub enum Content {
 }
 
 /// The kind (type tag) of a [`Content`] value.
-#[derive(
-    Debug, Clone, Copy, PartialEq, Eq, Hash, PartialOrd, Ord, Serialize, Deserialize,
-)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, PartialOrd, Ord, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub enum ContentKind {
     /// See [`Content::Nothing`].
@@ -137,7 +135,10 @@ impl Content {
     pub fn as_text(&self) -> Result<String, CoerceError> {
         match self.coerce_to(ContentKind::Text)? {
             Content::Text(s) => Ok(s),
-            other => Err(CoerceError::Parse { value: format!("{other:?}"), to: ContentKind::Text }),
+            other => Err(CoerceError::Parse {
+                value: format!("{other:?}"),
+                to: ContentKind::Text,
+            }),
         }
     }
 
@@ -145,9 +146,10 @@ impl Content {
     pub fn as_number(&self) -> Result<f64, CoerceError> {
         match self.coerce_to(ContentKind::Number)? {
             Content::Number(n) => Ok(n),
-            other => {
-                Err(CoerceError::Parse { value: format!("{other:?}"), to: ContentKind::Number })
-            }
+            other => Err(CoerceError::Parse {
+                value: format!("{other:?}"),
+                to: ContentKind::Number,
+            }),
         }
     }
 
@@ -155,9 +157,10 @@ impl Content {
     pub fn as_boolean(&self) -> Result<bool, CoerceError> {
         match self.coerce_to(ContentKind::Boolean)? {
             Content::Boolean(b) => Ok(b),
-            other => {
-                Err(CoerceError::Parse { value: format!("{other:?}"), to: ContentKind::Boolean })
-            }
+            other => Err(CoerceError::Parse {
+                value: format!("{other:?}"),
+                to: ContentKind::Boolean,
+            }),
         }
     }
 
@@ -184,7 +187,11 @@ impl Content {
         };
         let mut line = full.replace(['\n', '\r'], " ");
         if line.chars().count() > max_chars {
-            line = line.chars().take(max_chars.saturating_sub(1)).collect::<String>() + "…";
+            line = line
+                .chars()
+                .take(max_chars.saturating_sub(1))
+                .collect::<String>()
+                + "…";
         }
         line
     }
@@ -206,7 +213,10 @@ mod tests {
     #[test]
     fn into_items_wraps_scalars_and_flattens_lists() {
         assert_eq!(Content::Nothing.into_items(), vec![]);
-        assert_eq!(Content::Number(1.0).into_items(), vec![Content::Number(1.0)]);
+        assert_eq!(
+            Content::Number(1.0).into_items(),
+            vec![Content::Number(1.0)]
+        );
         let list = Content::List(vec![Content::Text("a".into()), Content::Text("b".into())]);
         assert_eq!(list.into_items().len(), 2);
     }

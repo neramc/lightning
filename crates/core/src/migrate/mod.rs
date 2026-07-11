@@ -85,7 +85,10 @@ mod tests {
     #[test]
     fn missing_schema_version_is_invalid() {
         let mut doc = json!({ "name": "x" });
-        assert!(matches!(migrate_to_current(&mut doc), Err(MigrateError::InvalidFile)));
+        assert!(matches!(
+            migrate_to_current(&mut doc),
+            Err(MigrateError::InvalidFile)
+        ));
     }
 
     #[test]

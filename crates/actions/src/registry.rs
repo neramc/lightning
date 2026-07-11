@@ -107,7 +107,10 @@ impl ActionInvoker for Registry {
                         hint: "grant it in the system settings".to_owned(),
                     }
                 }
-                None => ActionError::Unsupported { os: ctx.caps.os_label(), reason },
+                None => ActionError::Unsupported {
+                    os: ctx.caps.os_label(),
+                    reason,
+                },
             });
         }
         if let Some(class) = def.permission {
@@ -124,17 +127,20 @@ mod tests {
     use super::*;
     use crate::{Category, test_util};
     use lightning_core::{ContentKind, PermissionClass};
-    use lightning_platform::{
-        Capability, CapabilitySnapshot, Os, PlatformSupport,
-    };
+    use lightning_platform::{Capability, CapabilitySnapshot, Os, PlatformSupport};
 
     struct WindowsOnly;
 
     #[async_trait::async_trait]
     impl Action for WindowsOnly {
         fn def(&self) -> ActionDef {
-            ActionDef::pure("test.windows_only", Category::System, "gear", ContentKind::Nothing)
-                .with_supports(PlatformSupport::only(Os::Windows))
+            ActionDef::pure(
+                "test.windows_only",
+                Category::System,
+                "gear",
+                ContentKind::Nothing,
+            )
+            .with_supports(PlatformSupport::only(Os::Windows))
         }
         async fn execute(
             &self,
@@ -150,9 +156,14 @@ mod tests {
     #[async_trait::async_trait]
     impl Action for NeedsInput {
         fn def(&self) -> ActionDef {
-            ActionDef::pure("test.needs_input", Category::Input, "keyboard", ContentKind::Nothing)
-                .with_capability(Capability::InputInjection)
-                .with_permission(PermissionClass::Input)
+            ActionDef::pure(
+                "test.needs_input",
+                Category::Input,
+                "keyboard",
+                ContentKind::Nothing,
+            )
+            .with_capability(Capability::InputInjection)
+            .with_permission(PermissionClass::Input)
         }
         async fn execute(
             &self,
@@ -166,11 +177,19 @@ mod tests {
     #[test]
     fn builtins_register_without_duplicates() {
         let registry = Registry::with_builtins();
-        assert!(registry.len() >= 25, "expected a substantial catalog, got {}", registry.len());
+        assert!(
+            registry.len() >= 25,
+            "expected a substantial catalog, got {}",
+            registry.len()
+        );
         for def in registry.defs() {
             let category_prefix = def.id.split('.').next().unwrap();
             assert!(!category_prefix.is_empty());
-            assert!(def.id.contains('.'), "id '{}' must be <category>.<name>", def.id);
+            assert!(
+                def.id.contains('.'),
+                "id '{}' must be <category>.<name>",
+                def.id
+            );
         }
     }
 
@@ -180,7 +199,9 @@ mod tests {
         registry.register(Arc::new(WindowsOnly));
         // Linux ctx (from test_util) running a Windows-only action.
         let mut ctx = test_util::ctx();
-        let err = registry.invoke("test.windows_only", &mut ctx, Content::Nothing).await;
+        let err = registry
+            .invoke("test.windows_only", &mut ctx, Content::Nothing)
+            .await;
         assert!(matches!(err, Err(ActionError::Unsupported { .. })));
     }
 
@@ -204,9 +225,11 @@ mod tests {
                 }),
             },
         );
-        let mut ctx = lightning_core::RunContext::new(snapshot)
-            .with_permissions([PermissionClass::Input]);
-        let err = registry.invoke("test.needs_input", &mut ctx, Content::Nothing).await;
+        let mut ctx =
+            lightning_core::RunContext::new(snapshot).with_permissions([PermissionClass::Input]);
+        let err = registry
+            .invoke("test.needs_input", &mut ctx, Content::Nothing)
+            .await;
         assert!(matches!(err, Err(ActionError::MissingTool { tool, .. }) if tool == "ydotool"));
     }
 
@@ -216,7 +239,9 @@ mod tests {
         registry.register(Arc::new(NeedsInput));
         // Capability available but permission not granted.
         let mut ctx = test_util::ctx();
-        let err = registry.invoke("test.needs_input", &mut ctx, Content::Nothing).await;
+        let err = registry
+            .invoke("test.needs_input", &mut ctx, Content::Nothing)
+            .await;
         assert!(matches!(err, Err(ActionError::PermissionNotGranted { .. })));
     }
 
@@ -224,7 +249,9 @@ mod tests {
     async fn unknown_action_is_reported() {
         let registry = Registry::with_builtins();
         let mut ctx = test_util::ctx();
-        let err = registry.invoke("no.such_action", &mut ctx, Content::Nothing).await;
+        let err = registry
+            .invoke("no.such_action", &mut ctx, Content::Nothing)
+            .await;
         assert!(matches!(err, Err(ActionError::UnknownAction(_))));
     }
 }

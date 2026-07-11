@@ -14,8 +14,13 @@ pub struct ShowResult;
 #[async_trait::async_trait]
 impl Action for ShowResult {
     fn def(&self) -> ActionDef {
-        ActionDef::pure("control.show_result", Category::ControlFlow, "eye", ContentKind::Text)
-            .with_param(ParamDef::optional("text", ParamKind::Text))
+        ActionDef::pure(
+            "control.show_result",
+            Category::ControlFlow,
+            "eye",
+            ContentKind::Text,
+        )
+        .with_param(ParamDef::optional("text", ParamKind::Text))
     }
 
     async fn execute(&self, ctx: &mut RunContext, input: Content) -> Result<Content, ActionError> {
@@ -37,7 +42,10 @@ mod tests {
     #[tokio::test]
     async fn logs_and_returns_the_text() {
         let mut ctx = test_util::ctx();
-        let out = ShowResult.execute(&mut ctx, Content::Number(3.0)).await.unwrap();
+        let out = ShowResult
+            .execute(&mut ctx, Content::Number(3.0))
+            .await
+            .unwrap();
         assert_eq!(out, Content::Text("3".into()));
         assert_eq!(ctx.log.entries().len(), 1);
     }

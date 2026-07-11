@@ -13,15 +13,16 @@ pub struct GetVariable;
 #[async_trait::async_trait]
 impl Action for GetVariable {
     fn def(&self) -> ActionDef {
-        ActionDef::pure("control.get_variable", Category::ControlFlow, "bookmark-open", ContentKind::Nothing)
-            .with_param(ParamDef::required("name", ParamKind::Text))
+        ActionDef::pure(
+            "control.get_variable",
+            Category::ControlFlow,
+            "bookmark-open",
+            ContentKind::Nothing,
+        )
+        .with_param(ParamDef::required("name", ParamKind::Text))
     }
 
-    async fn execute(
-        &self,
-        ctx: &mut RunContext,
-        _input: Content,
-    ) -> Result<Content, ActionError> {
+    async fn execute(&self, ctx: &mut RunContext, _input: Content) -> Result<Content, ActionError> {
         let name = ctx.param_text("name")?;
         ctx.var(&name)
             .cloned()
@@ -40,7 +41,10 @@ mod tests {
         let mut ctx = test_util::ctx_with(&[("name", Content::Text("x".into()))]);
         ctx.set_var("x", Content::Boolean(true));
         assert_eq!(
-            GetVariable.execute(&mut ctx, Content::Nothing).await.unwrap(),
+            GetVariable
+                .execute(&mut ctx, Content::Nothing)
+                .await
+                .unwrap(),
             Content::Boolean(true)
         );
 

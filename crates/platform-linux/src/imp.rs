@@ -6,12 +6,14 @@
 use std::path::{Path, PathBuf};
 
 use lightning_platform::{
-    Capability, CapabilityFix, CapabilitySnapshot, CapabilityStatus, Os, PlatformError,
-    PlatformOps,
+    Capability, CapabilityFix, CapabilitySnapshot, CapabilityStatus, Os, PlatformError, PlatformOps,
 };
 
 fn install_fix(tool: &str, hint: &str) -> CapabilityFix {
-    CapabilityFix::InstallTool { tool: tool.into(), hint: hint.into() }
+    CapabilityFix::InstallTool {
+        tool: tool.into(),
+        hint: hint.into(),
+    }
 }
 use tokio::process::Command;
 
@@ -88,7 +90,11 @@ impl PlatformOps for LinuxPlatform {
             Session::Headless => Some("headless".to_owned()),
         };
 
-        let mut snapshot = CapabilitySnapshot { os: Os::Linux, environment, ..CapabilitySnapshot::unconstrained(Os::Linux) };
+        let mut snapshot = CapabilitySnapshot {
+            os: Os::Linux,
+            environment,
+            ..CapabilitySnapshot::unconstrained(Os::Linux)
+        };
 
         // Input injection: X11 native; Wayland needs the ydotool daemon or a
         // libei portal. Probe the socket, not just the binary — a binary
@@ -144,7 +150,11 @@ impl PlatformOps for LinuxPlatform {
             CapabilityStatus::Unavailable {
                 reason: "no clipboard utility for this session".into(),
                 fix: Some(install_fix(
-                    if session == Session::Wayland { "wl-clipboard" } else { "xclip" },
+                    if session == Session::Wayland {
+                        "wl-clipboard"
+                    } else {
+                        "xclip"
+                    },
                     "install it from your distribution's package manager",
                 )),
             }
@@ -161,10 +171,7 @@ impl PlatformOps for LinuxPlatform {
             } else {
                 CapabilityStatus::Unavailable {
                     reason: "NetworkManager (nmcli) not present".into(),
-                    fix: Some(install_fix(
-                        "nmcli",
-                        "install NetworkManager",
-                    )),
+                    fix: Some(install_fix("nmcli", "install NetworkManager")),
                 }
             },
         );
@@ -187,7 +194,9 @@ impl PlatformOps for LinuxPlatform {
             if has_tool("playerctl") {
                 CapabilityStatus::Available
             } else {
-                CapabilityStatus::Degraded { reason: "MPRIS over D-Bus without playerctl".into() }
+                CapabilityStatus::Degraded {
+                    reason: "MPRIS over D-Bus without playerctl".into(),
+                }
             },
         );
 
@@ -311,8 +320,11 @@ impl PlatformOps for LinuxPlatform {
                 });
             }
         };
-        let args: &[&str] =
-            if program == "xclip" { &["-selection", "clipboard"] } else { &[] };
+        let args: &[&str] = if program == "xclip" {
+            &["-selection", "clipboard"]
+        } else {
+            &[]
+        };
         let mut child = Command::new(program)
             .args(args)
             .stdin(std::process::Stdio::piped())
@@ -324,7 +336,9 @@ impl PlatformOps for LinuxPlatform {
         if status.success() {
             Ok(())
         } else {
-            Err(PlatformError::CommandFailed(format!("{program} exited with {status}")))
+            Err(PlatformError::CommandFailed(format!(
+                "{program} exited with {status}"
+            )))
         }
     }
 }

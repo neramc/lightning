@@ -20,11 +20,7 @@ impl Action for RandomNumber {
             .with_param(ParamDef::optional("integer", ParamKind::Boolean))
     }
 
-    async fn execute(
-        &self,
-        ctx: &mut RunContext,
-        _input: Content,
-    ) -> Result<Content, ActionError> {
+    async fn execute(&self, ctx: &mut RunContext, _input: Content) -> Result<Content, ActionError> {
         let min = ctx.param_number("min")?;
         let max = ctx.param_number("max")?;
         let integer = ctx.param_bool_or("integer", true)?;
@@ -56,7 +52,10 @@ mod tests {
                 ("min", Content::Number(1.0)),
                 ("max", Content::Number(6.0)),
             ]);
-            let out = RandomNumber.execute(&mut ctx, Content::Nothing).await.unwrap();
+            let out = RandomNumber
+                .execute(&mut ctx, Content::Nothing)
+                .await
+                .unwrap();
             let n = out.as_number().unwrap();
             assert!((1.0..=6.0).contains(&n));
             assert_eq!(n.fract(), 0.0);
@@ -65,10 +64,13 @@ mod tests {
 
     #[tokio::test]
     async fn inverted_range_is_rejected() {
-        let mut ctx = test_util::ctx_with(&[
-            ("min", Content::Number(9.0)),
-            ("max", Content::Number(1.0)),
-        ]);
-        assert!(RandomNumber.execute(&mut ctx, Content::Nothing).await.is_err());
+        let mut ctx =
+            test_util::ctx_with(&[("min", Content::Number(9.0)), ("max", Content::Number(1.0))]);
+        assert!(
+            RandomNumber
+                .execute(&mut ctx, Content::Nothing)
+                .await
+                .is_err()
+        );
     }
 }

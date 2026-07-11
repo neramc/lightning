@@ -7,9 +7,7 @@
 use serde::{Deserialize, Serialize};
 
 /// A class of dangerous behavior an action may perform.
-#[derive(
-    Debug, Clone, Copy, PartialEq, Eq, Hash, PartialOrd, Ord, Serialize, Deserialize,
-)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, PartialOrd, Ord, Serialize, Deserialize)]
 #[serde(rename_all = "kebab-case")]
 pub enum PermissionClass {
     /// Reading files outside the app's own data directory.

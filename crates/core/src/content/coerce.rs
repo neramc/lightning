@@ -27,7 +27,10 @@ fn number_to_text(n: f64) -> String {
 }
 
 fn parse_error(value: &Content, to: ContentKind) -> CoerceError {
-    CoerceError::Parse { value: value.preview(60), to }
+    CoerceError::Parse {
+        value: value.preview(60),
+        to,
+    }
 }
 
 /// Coerce `value` to `target` per the explicit table.
@@ -120,12 +123,17 @@ pub fn coerce(value: &Content, target: ContentKind) -> Result<Content, CoerceErr
         (other, ContentKind::List) => Ok(Content::List(vec![other.clone()])),
 
         // Everything else is not in the table.
-        _ => Err(CoerceError::Unsupported { from: value.kind(), to: target }),
+        _ => Err(CoerceError::Unsupported {
+            from: value.kind(),
+            to: target,
+        }),
     }
 }
 
 fn html_escape(s: &str) -> String {
-    s.replace('&', "&amp;").replace('<', "&lt;").replace('>', "&gt;")
+    s.replace('&', "&amp;")
+        .replace('<', "&lt;")
+        .replace('>', "&gt;")
 }
 
 fn content_to_json(value: &Content) -> serde_json::Value {
@@ -145,11 +153,11 @@ fn content_to_json(value: &Content) -> serde_json::Value {
             serde_json::Value::Array(items.iter().map(content_to_json).collect())
         }
         Content::Dictionary(map) => serde_json::Value::Object(
-            map.iter().map(|(k, v)| (k.clone(), content_to_json(v))).collect(),
+            map.iter()
+                .map(|(k, v)| (k.clone(), content_to_json(v)))
+                .collect(),
         ),
-        Content::File(p) | Content::Image(p) => {
-            serde_json::Value::String(p.display().to_string())
-        }
+        Content::File(p) | Content::Image(p) => serde_json::Value::String(p.display().to_string()),
         Content::Url(u) => serde_json::Value::String(u.clone()),
         Content::RichText { plain, .. } => serde_json::Value::String(plain.clone()),
         Content::Error { message } => serde_json::Value::String(format!("error: {message}")),
@@ -169,7 +177,9 @@ pub fn json_to_content(value: &serde_json::Value) -> Content {
             Content::List(items.iter().map(json_to_content).collect())
         }
         serde_json::Value::Object(map) => Content::Dictionary(
-            map.iter().map(|(k, v)| (k.clone(), json_to_content(v))).collect::<BTreeMap<_, _>>(),
+            map.iter()
+                .map(|(k, v)| (k.clone(), json_to_content(v)))
+                .collect::<BTreeMap<_, _>>(),
         ),
     }
 }
@@ -219,7 +229,10 @@ mod tests {
     #[test]
     fn file_to_image_requires_decodable_extension() {
         let png = Content::File(PathBuf::from("/tmp/pic.PNG"));
-        assert!(matches!(coerce(&png, ContentKind::Image), Ok(Content::Image(_))));
+        assert!(matches!(
+            coerce(&png, ContentKind::Image),
+            Ok(Content::Image(_))
+        ));
         let doc = Content::File(PathBuf::from("/tmp/notes.txt"));
         assert!(coerce(&doc, ContentKind::Image).is_err());
     }
@@ -245,7 +258,13 @@ mod tests {
 
     #[test]
     fn url_requires_a_scheme() {
-        assert!(coerce(&Content::Text("https://example.com".into()), ContentKind::Url).is_ok());
+        assert!(
+            coerce(
+                &Content::Text("https://example.com".into()),
+                ContentKind::Url
+            )
+            .is_ok()
+        );
         assert!(coerce(&Content::Text("not a url".into()), ContentKind::Url).is_err());
     }
 

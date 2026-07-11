@@ -14,12 +14,17 @@ pub struct GetItemFromList;
 #[async_trait::async_trait]
 impl Action for GetItemFromList {
     fn def(&self) -> ActionDef {
-        ActionDef::pure("control.get_item_from_list", Category::ControlFlow, "list-magnify", ContentKind::Nothing)
-            .with_param(ParamDef::required(
-                "which",
-                ParamKind::Enum(&["first", "last", "index", "random"]),
-            ))
-            .with_param(ParamDef::optional("index", ParamKind::Number))
+        ActionDef::pure(
+            "control.get_item_from_list",
+            Category::ControlFlow,
+            "list-magnify",
+            ContentKind::Nothing,
+        )
+        .with_param(ParamDef::required(
+            "which",
+            ParamKind::Enum(&["first", "last", "index", "random"]),
+        ))
+        .with_param(ParamDef::optional("index", ParamKind::Number))
     }
 
     async fn execute(&self, ctx: &mut RunContext, input: Content) -> Result<Content, ActionError> {
@@ -96,7 +101,10 @@ mod tests {
     async fn empty_list_yields_nothing() {
         let mut ctx = test_util::ctx_with(&[("which", Content::Text("first".into()))]);
         assert_eq!(
-            GetItemFromList.execute(&mut ctx, Content::List(vec![])).await.unwrap(),
+            GetItemFromList
+                .execute(&mut ctx, Content::List(vec![]))
+                .await
+                .unwrap(),
             Content::Nothing
         );
     }

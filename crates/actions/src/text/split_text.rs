@@ -13,8 +13,13 @@ pub struct SplitText;
 #[async_trait::async_trait]
 impl Action for SplitText {
     fn def(&self) -> ActionDef {
-        ActionDef::pure("text.split", Category::Text, "rows-split", ContentKind::List)
-            .with_param(ParamDef::optional("separator", ParamKind::Text))
+        ActionDef::pure(
+            "text.split",
+            Category::Text,
+            "rows-split",
+            ContentKind::List,
+        )
+        .with_param(ParamDef::optional("separator", ParamKind::Text))
     }
 
     async fn execute(&self, ctx: &mut RunContext, input: Content) -> Result<Content, ActionError> {
@@ -27,7 +32,9 @@ impl Action for SplitText {
         }
         let text = input.as_text()?;
         Ok(Content::List(
-            text.split(&separator).map(|part| Content::Text(part.to_owned())).collect(),
+            text.split(&separator)
+                .map(|part| Content::Text(part.to_owned()))
+                .collect(),
         ))
     }
 }
@@ -41,7 +48,10 @@ mod tests {
     #[tokio::test]
     async fn splits_on_newline_by_default() {
         let mut ctx = test_util::ctx();
-        let out = SplitText.execute(&mut ctx, Content::Text("a\nb".into())).await.unwrap();
+        let out = SplitText
+            .execute(&mut ctx, Content::Text("a\nb".into()))
+            .await
+            .unwrap();
         assert_eq!(
             out,
             Content::List(vec![Content::Text("a".into()), Content::Text("b".into())])

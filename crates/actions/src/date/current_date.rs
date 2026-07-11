@@ -13,7 +13,12 @@ pub struct CurrentDate;
 #[async_trait::async_trait]
 impl Action for CurrentDate {
     fn def(&self) -> ActionDef {
-        ActionDef::pure("date.current", Category::Date, "calendar", ContentKind::Date)
+        ActionDef::pure(
+            "date.current",
+            Category::Date,
+            "calendar",
+            ContentKind::Date,
+        )
     }
 
     async fn execute(
@@ -34,8 +39,13 @@ mod tests {
     #[tokio::test]
     async fn outputs_a_recent_date() {
         let mut ctx = test_util::ctx();
-        let out = CurrentDate.execute(&mut ctx, Content::Nothing).await.unwrap();
-        let Content::Date(d) = out else { panic!("expected date") };
+        let out = CurrentDate
+            .execute(&mut ctx, Content::Nothing)
+            .await
+            .unwrap();
+        let Content::Date(d) = out else {
+            panic!("expected date")
+        };
         assert!((chrono::Utc::now() - d).num_seconds().abs() < 5);
     }
 }

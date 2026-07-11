@@ -17,11 +17,7 @@ impl Action for TextLiteral {
             .with_param(ParamDef::required("text", ParamKind::Text))
     }
 
-    async fn execute(
-        &self,
-        ctx: &mut RunContext,
-        _input: Content,
-    ) -> Result<Content, ActionError> {
+    async fn execute(&self, ctx: &mut RunContext, _input: Content) -> Result<Content, ActionError> {
         Ok(Content::Text(ctx.param_text("text")?))
     }
 }
@@ -36,7 +32,10 @@ mod tests {
     async fn emits_the_param() {
         let mut ctx = test_util::ctx_with(&[("text", Content::Text("hi".into()))]);
         assert_eq!(
-            TextLiteral.execute(&mut ctx, Content::Nothing).await.unwrap(),
+            TextLiteral
+                .execute(&mut ctx, Content::Nothing)
+                .await
+                .unwrap(),
             Content::Text("hi".into())
         );
     }

@@ -17,32 +17,50 @@ fn representative_shortcut() -> Shortcut {
     step.uuid = Uuid::from_u128(0xA1);
     step.params.insert(
         "case".into(),
-        ParamValue::Literal { value: Content::Text("uppercase".into()) },
+        ParamValue::Literal {
+            value: Content::Text("uppercase".into()),
+        },
     );
-    step.params.insert("source".into(), ParamValue::Variable { name: "greeting".into() });
+    step.params.insert(
+        "source".into(),
+        ParamValue::Variable {
+            name: "greeting".into(),
+        },
+    );
     step.params.insert(
         "note".into(),
-        ParamValue::Template { template: "was {{greeting}}".into() },
+        ParamValue::Template {
+            template: "was {{greeting}}".into(),
+        },
     );
 
     let mut condition = Step::new("control.if");
     condition.uuid = Uuid::from_u128(0xB1);
     condition.params.insert(
         "op".into(),
-        ParamValue::Literal { value: Content::Text("hasValue".into()) },
+        ParamValue::Literal {
+            value: Content::Text("hasValue".into()),
+        },
     );
     let mut then_step = Step::new("control.nothing");
     then_step.uuid = Uuid::from_u128(0xB2);
-    then_step.error_policy =
-        lightning_core::ErrorPolicy::Retry { attempts: 2, backoff_ms: 250 };
-    let condition = condition.with_branch("then", vec![then_step]).with_branch("otherwise", vec![]);
+    then_step.error_policy = lightning_core::ErrorPolicy::Retry {
+        attempts: 2,
+        backoff_ms: 250,
+    };
+    let condition = condition
+        .with_branch("then", vec![then_step])
+        .with_branch("otherwise", vec![]);
 
     Shortcut {
         schema_version: lightning_core::CURRENT_SCHEMA_VERSION,
         id: Uuid::from_u128(1),
         name: "Representative".into(),
         description: "Pins the .lightning schema".into(),
-        icon: Icon { glyph: "⚡".into(), gradient: "scripting".into() },
+        icon: Icon {
+            glyph: "⚡".into(),
+            gradient: "scripting".into(),
+        },
         hotkey: Some("Ctrl+Shift+L".into()),
         steps: vec![step, condition],
         trigger: Some(TriggerConfig {
@@ -72,13 +90,15 @@ fn round_trip_is_lossless() {
 fn current_version_files_open_without_migration() {
     let json = representative_shortcut().to_pretty_json().unwrap();
     let shortcut = Shortcut::from_json_str(&json).unwrap();
-    assert_eq!(shortcut.schema_version, lightning_core::CURRENT_SCHEMA_VERSION);
+    assert_eq!(
+        shortcut.schema_version,
+        lightning_core::CURRENT_SCHEMA_VERSION
+    );
 }
 
 #[test]
 fn future_version_files_are_rejected_with_a_clear_error() {
-    let mut value: serde_json::Value =
-        serde_json::to_value(representative_shortcut()).unwrap();
+    let mut value: serde_json::Value = serde_json::to_value(representative_shortcut()).unwrap();
     value["schemaVersion"] = serde_json::json!(999);
     let err = Shortcut::from_json_str(&value.to_string()).unwrap_err();
     assert!(err.to_string().contains("999"));

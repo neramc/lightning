@@ -15,8 +15,9 @@ pub struct Base64Text;
 #[async_trait::async_trait]
 impl Action for Base64Text {
     fn def(&self) -> ActionDef {
-        ActionDef::pure("text.base64", Category::Text, "binary", ContentKind::Text)
-            .with_param(ParamDef::required("mode", ParamKind::Enum(&["encode", "decode"])))
+        ActionDef::pure("text.base64", Category::Text, "binary", ContentKind::Text).with_param(
+            ParamDef::required("mode", ParamKind::Enum(&["encode", "decode"])),
+        )
     }
 
     async fn execute(&self, ctx: &mut RunContext, input: Content) -> Result<Content, ActionError> {
@@ -51,7 +52,10 @@ mod tests {
     #[tokio::test]
     async fn round_trips() {
         let mut ctx = test_util::ctx_with(&[("mode", Content::Text("encode".into()))]);
-        let encoded = Base64Text.execute(&mut ctx, Content::Text("빛 lightning".into())).await.unwrap();
+        let encoded = Base64Text
+            .execute(&mut ctx, Content::Text("빛 lightning".into()))
+            .await
+            .unwrap();
         let mut ctx = test_util::ctx_with(&[("mode", Content::Text("decode".into()))]);
         let decoded = Base64Text.execute(&mut ctx, encoded).await.unwrap();
         assert_eq!(decoded, Content::Text("빛 lightning".into()));
@@ -61,7 +65,9 @@ mod tests {
     async fn invalid_base64_fails_cleanly() {
         let mut ctx = test_util::ctx_with(&[("mode", Content::Text("decode".into()))]);
         assert!(matches!(
-            Base64Text.execute(&mut ctx, Content::Text("!!not base64!!".into())).await,
+            Base64Text
+                .execute(&mut ctx, Content::Text("!!not base64!!".into()))
+                .await,
             Err(ActionError::Failed(_))
         ));
     }

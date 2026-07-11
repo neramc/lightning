@@ -175,7 +175,9 @@ mod tests {
     fn with_overrides_one_entry() {
         let s = PlatformSupport::all_full().with(
             Os::Linux,
-            SupportLevel::Partial { note: "Wayland needs ydotool".into() },
+            SupportLevel::Partial {
+                note: "Wayland needs ydotool".into(),
+            },
         );
         assert!(matches!(s.for_os(Os::Linux), SupportLevel::Partial { .. }));
         assert_eq!(*s.for_os(Os::Windows), SupportLevel::Full);
@@ -183,8 +185,8 @@ mod tests {
 
     #[test]
     fn serde_shape_is_stable() {
-        let json = serde_json::to_value(SupportLevel::Partial { note: "n".into() })
-            .expect("serializable");
+        let json =
+            serde_json::to_value(SupportLevel::Partial { note: "n".into() }).expect("serializable");
         assert_eq!(json["level"], "partial");
         assert_eq!(json["note"], "n");
     }

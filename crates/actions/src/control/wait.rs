@@ -13,8 +13,13 @@ pub struct Wait;
 #[async_trait::async_trait]
 impl Action for Wait {
     fn def(&self) -> ActionDef {
-        ActionDef::pure("control.wait", Category::ControlFlow, "hourglass", ContentKind::Nothing)
-            .with_param(ParamDef::required("seconds", ParamKind::Number))
+        ActionDef::pure(
+            "control.wait",
+            Category::ControlFlow,
+            "hourglass",
+            ContentKind::Nothing,
+        )
+        .with_param(ParamDef::required("seconds", ParamKind::Number))
     }
 
     async fn execute(&self, ctx: &mut RunContext, input: Content) -> Result<Content, ActionError> {
@@ -42,7 +47,10 @@ mod tests {
     #[tokio::test]
     async fn waits_and_passes_input_through() {
         let mut ctx = test_util::ctx_with(&[("seconds", Content::Number(0.01))]);
-        let out = Wait.execute(&mut ctx, Content::Text("x".into())).await.unwrap();
+        let out = Wait
+            .execute(&mut ctx, Content::Text("x".into()))
+            .await
+            .unwrap();
         assert_eq!(out, Content::Text("x".into()));
     }
 

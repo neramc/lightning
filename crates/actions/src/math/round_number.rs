@@ -13,9 +13,17 @@ pub struct RoundNumber;
 #[async_trait::async_trait]
 impl Action for RoundNumber {
     fn def(&self) -> ActionDef {
-        ActionDef::pure("math.round", Category::Math, "circle-half", ContentKind::Number)
-            .with_param(ParamDef::optional("mode", ParamKind::Enum(&["nearest", "up", "down"])))
-            .with_param(ParamDef::optional("decimals", ParamKind::Number))
+        ActionDef::pure(
+            "math.round",
+            Category::Math,
+            "circle-half",
+            ContentKind::Number,
+        )
+        .with_param(ParamDef::optional(
+            "mode",
+            ParamKind::Enum(&["nearest", "up", "down"]),
+        ))
+        .with_param(ParamDef::optional("decimals", ParamKind::Number))
     }
 
     async fn execute(&self, ctx: &mut RunContext, input: Content) -> Result<Content, ActionError> {
@@ -57,7 +65,10 @@ mod tests {
     async fn modes_and_decimals() {
         let mut ctx = test_util::ctx();
         assert_eq!(
-            RoundNumber.execute(&mut ctx, Content::Number(2.5)).await.unwrap(),
+            RoundNumber
+                .execute(&mut ctx, Content::Number(2.5))
+                .await
+                .unwrap(),
             Content::Number(3.0)
         );
         let mut ctx = test_util::ctx_with(&[
@@ -65,7 +76,10 @@ mod tests {
             ("decimals", Content::Number(1.0)),
         ]);
         assert_eq!(
-            RoundNumber.execute(&mut ctx, Content::Number(2.79)).await.unwrap(),
+            RoundNumber
+                .execute(&mut ctx, Content::Number(2.79))
+                .await
+                .unwrap(),
             Content::Number(2.7)
         );
     }

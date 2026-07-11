@@ -13,7 +13,12 @@ pub struct Nothing;
 #[async_trait::async_trait]
 impl Action for Nothing {
     fn def(&self) -> ActionDef {
-        ActionDef::pure("control.nothing", Category::ControlFlow, "circle-dashed", ContentKind::Nothing)
+        ActionDef::pure(
+            "control.nothing",
+            Category::ControlFlow,
+            "circle-dashed",
+            ContentKind::Nothing,
+        )
     }
 
     async fn execute(
@@ -34,7 +39,10 @@ mod tests {
     #[tokio::test]
     async fn outputs_nothing() {
         let mut ctx = test_util::ctx();
-        let out = Nothing.execute(&mut ctx, Content::Text("x".into())).await.unwrap();
+        let out = Nothing
+            .execute(&mut ctx, Content::Text("x".into()))
+            .await
+            .unwrap();
         assert_eq!(out, Content::Nothing);
     }
 }

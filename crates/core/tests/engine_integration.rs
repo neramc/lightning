@@ -71,7 +71,9 @@ async fn branching_fixture_takes_the_then_branch() {
 async fn loop_fixture_collects_each_iteration() {
     let shortcut = load_fixture("loop.lightning");
     let output = engine().run(&shortcut, &mut ctx()).await.unwrap();
-    let Content::List(items) = output else { panic!("expected list, got {output:?}") };
+    let Content::List(items) = output else {
+        panic!("expected list, got {output:?}")
+    };
     assert_eq!(items.len(), 3);
     assert_eq!(items[0], Content::Text("round 1".into()));
     assert_eq!(items[2], Content::Text("round 3".into()));
@@ -80,7 +82,9 @@ async fn loop_fixture_collects_each_iteration() {
 #[tokio::test]
 async fn continue_policy_passes_previous_output_through() {
     let mut shortcut = Shortcut::new("Skip");
-    shortcut.steps.push(Step::new("test.echo").with_param("text", Content::Text("keep".into())));
+    shortcut
+        .steps
+        .push(Step::new("test.echo").with_param("text", Content::Text("keep".into())));
     let mut failing = Step::new("test.fail");
     failing.error_policy = ErrorPolicy::Continue;
     shortcut.steps.push(failing);
@@ -102,7 +106,10 @@ async fn stop_policy_surfaces_the_error() {
 async fn retry_policy_retries_then_fails() {
     let mut shortcut = Shortcut::new("Retry");
     let mut failing = Step::new("test.fail");
-    failing.error_policy = ErrorPolicy::Retry { attempts: 2, backoff_ms: 1 };
+    failing.error_policy = ErrorPolicy::Retry {
+        attempts: 2,
+        backoff_ms: 1,
+    };
     shortcut.steps.push(failing);
 
     let mut context = ctx();
@@ -120,7 +127,10 @@ async fn loop_cap_stops_runaway_repeats() {
             .with_param("count", Content::Number(50.0))
             .with_branch("body", vec![]),
     );
-    let mut context = ctx().with_limits(RunLimits { loop_cap: 10, ..RunLimits::default() });
+    let mut context = ctx().with_limits(RunLimits {
+        loop_cap: 10,
+        ..RunLimits::default()
+    });
     let err = engine().run(&shortcut, &mut context).await.unwrap_err();
     assert!(matches!(err, ActionError::LoopCapExceeded { cap: 10 }));
 }
@@ -146,8 +156,7 @@ async fn run_shortcut_recursion_is_capped() {
     let engine = Engine::new(Arc::new(TestInvoker)).with_resolver(Arc::new(SelfResolver));
     let mut shortcut = Shortcut::new("Entry");
     shortcut.steps.push(
-        Step::new("control.run_shortcut")
-            .with_param("shortcut", Content::Text("Ouroboros".into())),
+        Step::new("control.run_shortcut").with_param("shortcut", Content::Text("Ouroboros".into())),
     );
     let err = engine.run(&shortcut, &mut ctx()).await.unwrap_err();
     assert!(matches!(err, ActionError::RecursionLimit { max: 16, .. }));
@@ -156,7 +165,9 @@ async fn run_shortcut_recursion_is_capped() {
 #[tokio::test]
 async fn exit_unwinds_with_current_value() {
     let mut shortcut = Shortcut::new("Early");
-    shortcut.steps.push(Step::new("test.echo").with_param("text", Content::Text("done".into())));
+    shortcut
+        .steps
+        .push(Step::new("test.echo").with_param("text", Content::Text("done".into())));
     shortcut.steps.push(Step::new("control.exit"));
     shortcut.steps.push(Step::new("test.fail")); // must never run
     let output = engine().run(&shortcut, &mut ctx()).await.unwrap();

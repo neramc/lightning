@@ -13,8 +13,13 @@ pub struct CombineText;
 #[async_trait::async_trait]
 impl Action for CombineText {
     fn def(&self) -> ActionDef {
-        ActionDef::pure("text.combine", Category::Text, "rows-merge", ContentKind::Text)
-            .with_param(ParamDef::optional("separator", ParamKind::Text))
+        ActionDef::pure(
+            "text.combine",
+            Category::Text,
+            "rows-merge",
+            ContentKind::Text,
+        )
+        .with_param(ParamDef::optional("separator", ParamKind::Text))
     }
 
     async fn execute(&self, ctx: &mut RunContext, input: Content) -> Result<Content, ActionError> {

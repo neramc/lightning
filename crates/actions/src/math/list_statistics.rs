@@ -14,11 +14,16 @@ pub struct ListStatistics;
 #[async_trait::async_trait]
 impl Action for ListStatistics {
     fn def(&self) -> ActionDef {
-        ActionDef::pure("math.list_statistics", Category::Math, "sigma", ContentKind::Number)
-            .with_param(ParamDef::required(
-                "operation",
-                ParamKind::Enum(&["minimum", "maximum", "average", "sum", "median", "count"]),
-            ))
+        ActionDef::pure(
+            "math.list_statistics",
+            Category::Math,
+            "sigma",
+            ContentKind::Number,
+        )
+        .with_param(ParamDef::required(
+            "operation",
+            ParamKind::Enum(&["minimum", "maximum", "average", "sum", "median", "count"]),
+        ))
     }
 
     async fn execute(&self, ctx: &mut RunContext, input: Content) -> Result<Content, ActionError> {
@@ -69,7 +74,12 @@ mod tests {
 
     async fn run(op: &str, values: &[f64]) -> f64 {
         let mut ctx = test_util::ctx_with(&[("operation", Content::Text(op.into()))]);
-        ListStatistics.execute(&mut ctx, list(values)).await.unwrap().as_number().unwrap()
+        ListStatistics
+            .execute(&mut ctx, list(values))
+            .await
+            .unwrap()
+            .as_number()
+            .unwrap()
     }
 
     #[tokio::test]

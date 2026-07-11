@@ -13,11 +13,16 @@ pub struct Count;
 #[async_trait::async_trait]
 impl Action for Count {
     fn def(&self) -> ActionDef {
-        ActionDef::pure("control.count", Category::ControlFlow, "list-numbers", ContentKind::Number)
-            .with_param(ParamDef::optional(
-                "unit",
-                ParamKind::Enum(&["items", "characters", "words", "lines"]),
-            ))
+        ActionDef::pure(
+            "control.count",
+            Category::ControlFlow,
+            "list-numbers",
+            ContentKind::Number,
+        )
+        .with_param(ParamDef::optional(
+            "unit",
+            ParamKind::Enum(&["items", "characters", "words", "lines"]),
+        ))
     }
 
     async fn execute(&self, ctx: &mut RunContext, input: Content) -> Result<Content, ActionError> {
@@ -48,15 +53,24 @@ mod tests {
     async fn counts_items_by_default() {
         let mut ctx = test_util::ctx();
         let list = Content::List(vec![Content::Number(1.0), Content::Number(2.0)]);
-        assert_eq!(Count.execute(&mut ctx, list).await.unwrap(), Content::Number(2.0));
+        assert_eq!(
+            Count.execute(&mut ctx, list).await.unwrap(),
+            Content::Number(2.0)
+        );
     }
 
     #[tokio::test]
     async fn counts_words_and_lines() {
         let text = Content::Text("one two\nthree".into());
         let mut ctx = test_util::ctx_with(&[("unit", Content::Text("words".into()))]);
-        assert_eq!(Count.execute(&mut ctx, text.clone()).await.unwrap(), Content::Number(3.0));
+        assert_eq!(
+            Count.execute(&mut ctx, text.clone()).await.unwrap(),
+            Content::Number(3.0)
+        );
         let mut ctx = test_util::ctx_with(&[("unit", Content::Text("lines".into()))]);
-        assert_eq!(Count.execute(&mut ctx, text).await.unwrap(), Content::Number(2.0));
+        assert_eq!(
+            Count.execute(&mut ctx, text).await.unwrap(),
+            Content::Number(2.0)
+        );
     }
 }

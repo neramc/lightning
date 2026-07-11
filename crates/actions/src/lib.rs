@@ -41,8 +41,9 @@ pub struct ActionDef {
     pub icon: &'static str,
     /// Parameter schema; the editor auto-renders the param UI from this.
     pub params: Vec<ParamDef>,
-    /// The output content kind.
-    pub output: ContentKind,
+    /// The output content kind; `None` when it depends on the script/input
+    /// (e.g. Run JavaScript).
+    pub output: Option<ContentKind>,
     /// Per-OS static support (§8.1). A wrong `Full` is worse than an honest
     /// `None`.
     pub supports: PlatformSupport,
@@ -59,13 +60,18 @@ impl ActionDef {
     /// A def with full cross-platform support and no permissions — the
     /// baseline for pure, engine-level actions.
     #[must_use]
-    pub fn pure(id: &'static str, category: Category, icon: &'static str, output: ContentKind) -> Self {
+    pub fn pure(
+        id: &'static str,
+        category: Category,
+        icon: &'static str,
+        output: ContentKind,
+    ) -> Self {
         Self {
             id,
             category,
             icon,
             params: Vec::new(),
-            output,
+            output: Some(output),
             supports: PlatformSupport::all_full(),
             permission: None,
             requires_capability: None,
@@ -117,13 +123,21 @@ impl ParamDef {
     /// A required parameter.
     #[must_use]
     pub fn required(key: &'static str, kind: ParamKind) -> Self {
-        Self { key, kind, required: true }
+        Self {
+            key,
+            kind,
+            required: true,
+        }
     }
 
     /// An optional parameter.
     #[must_use]
     pub fn optional(key: &'static str, kind: ParamKind) -> Self {
-        Self { key, kind, required: false }
+        Self {
+            key,
+            kind,
+            required: false,
+        }
     }
 }
 
@@ -219,8 +233,7 @@ pub trait Action: Send + Sync {
     fn def(&self) -> ActionDef;
     /// Execute against the previous step's output. Step params are available
     /// via [`RunContext::param`] and friends.
-    async fn execute(&self, ctx: &mut RunContext, input: Content)
-    -> Result<Content, ActionError>;
+    async fn execute(&self, ctx: &mut RunContext, input: Content) -> Result<Content, ActionError>;
 }
 
 #[cfg(test)]

@@ -21,11 +21,16 @@ fn capitalize_word(word: &str) -> String {
 #[async_trait::async_trait]
 impl Action for ChangeCase {
     fn def(&self) -> ActionDef {
-        ActionDef::pure("text.change_case", Category::Text, "text-case", ContentKind::Text)
-            .with_param(ParamDef::required(
-                "case",
-                ParamKind::Enum(&["lowercase", "uppercase", "capitalize", "sentence"]),
-            ))
+        ActionDef::pure(
+            "text.change_case",
+            Category::Text,
+            "text-case",
+            ContentKind::Text,
+        )
+        .with_param(ParamDef::required(
+            "case",
+            ParamKind::Enum(&["lowercase", "uppercase", "capitalize", "sentence"]),
+        ))
     }
 
     async fn execute(&self, ctx: &mut RunContext, input: Content) -> Result<Content, ActionError> {
@@ -73,7 +78,10 @@ mod tests {
     async fn all_modes() {
         assert_eq!(run("lowercase", "Hello World").await, "hello world");
         assert_eq!(run("uppercase", "Hello World").await, "HELLO WORLD");
-        assert_eq!(run("capitalize", "hello brave world").await, "Hello Brave World");
+        assert_eq!(
+            run("capitalize", "hello brave world").await,
+            "Hello Brave World"
+        );
         assert_eq!(run("sentence", "HELLO WORLD").await, "Hello world");
     }
 }

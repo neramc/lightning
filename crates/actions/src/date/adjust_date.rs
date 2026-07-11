@@ -13,13 +13,21 @@ pub struct AdjustDate;
 #[async_trait::async_trait]
 impl Action for AdjustDate {
     fn def(&self) -> ActionDef {
-        ActionDef::pure("date.adjust", Category::Date, "calendar-plus", ContentKind::Date)
-            .with_param(ParamDef::required("amount", ParamKind::Number))
-            .with_param(ParamDef::required(
-                "unit",
-                ParamKind::Enum(&["seconds", "minutes", "hours", "days", "weeks"]),
-            ))
-            .with_param(ParamDef::optional("direction", ParamKind::Enum(&["add", "subtract"])))
+        ActionDef::pure(
+            "date.adjust",
+            Category::Date,
+            "calendar-plus",
+            ContentKind::Date,
+        )
+        .with_param(ParamDef::required("amount", ParamKind::Number))
+        .with_param(ParamDef::required(
+            "unit",
+            ParamKind::Enum(&["seconds", "minutes", "hours", "days", "weeks"]),
+        ))
+        .with_param(ParamDef::optional(
+            "direction",
+            ParamKind::Enum(&["add", "subtract"]),
+        ))
     }
 
     async fn execute(&self, ctx: &mut RunContext, input: Content) -> Result<Content, ActionError> {
@@ -74,7 +82,10 @@ mod tests {
             ("amount", Content::Number(90.0)),
             ("unit", Content::Text("minutes".into())),
         ]);
-        let out = AdjustDate.execute(&mut ctx, Content::Date(base)).await.unwrap();
+        let out = AdjustDate
+            .execute(&mut ctx, Content::Date(base))
+            .await
+            .unwrap();
         assert_eq!(out, Content::Date(base + chrono::Duration::minutes(90)));
 
         let mut ctx = test_util::ctx_with(&[
@@ -82,7 +93,10 @@ mod tests {
             ("unit", Content::Text("weeks".into())),
             ("direction", Content::Text("subtract".into())),
         ]);
-        let out = AdjustDate.execute(&mut ctx, Content::Date(base)).await.unwrap();
+        let out = AdjustDate
+            .execute(&mut ctx, Content::Date(base))
+            .await
+            .unwrap();
         assert_eq!(out, Content::Date(base - chrono::Duration::weeks(1)));
     }
 }

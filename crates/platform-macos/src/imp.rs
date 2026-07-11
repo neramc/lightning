@@ -102,7 +102,9 @@ impl PlatformOps for MacPlatform {
         if status.success() {
             Ok(())
         } else {
-            Err(PlatformError::CommandFailed(format!("pbcopy exited with {status}")))
+            Err(PlatformError::CommandFailed(format!(
+                "pbcopy exited with {status}"
+            )))
         }
     }
 }

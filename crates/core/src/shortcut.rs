@@ -29,7 +29,10 @@ pub struct Icon {
 
 impl Default for Icon {
     fn default() -> Self {
-        Self { glyph: "⚡".to_owned(), gradient: "system".to_owned() }
+        Self {
+            glyph: "⚡".to_owned(),
+            gradient: "system".to_owned(),
+        }
     }
 }
 
@@ -61,7 +64,11 @@ pub enum ParamValue {
 
 /// Per-step error policy (CLAUDE.md §6.4). Default is `Stop`.
 #[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize)]
-#[serde(tag = "policy", rename_all = "camelCase", rename_all_fields = "camelCase")]
+#[serde(
+    tag = "policy",
+    rename_all = "camelCase",
+    rename_all_fields = "camelCase"
+)]
 pub enum ErrorPolicy {
     /// Stop the run and surface the error.
     #[default]
@@ -124,7 +131,8 @@ impl Step {
     /// Set a literal parameter, builder-style.
     #[must_use]
     pub fn with_param(mut self, key: impl Into<String>, value: Content) -> Self {
-        self.params.insert(key.into(), ParamValue::Literal { value });
+        self.params
+            .insert(key.into(), ParamValue::Literal { value });
         self
     }
 
@@ -138,7 +146,10 @@ impl Step {
     /// Add a branch, builder-style.
     #[must_use]
     pub fn with_branch(mut self, label: impl Into<String>, steps: Vec<Step>) -> Self {
-        self.branches.push(Branch { label: label.into(), steps });
+        self.branches.push(Branch {
+            label: label.into(),
+            steps,
+        });
         self
     }
 
@@ -228,8 +239,8 @@ impl Shortcut {
     /// Parse a `.lightning` document, migrating older schema versions first.
     /// Old files must always open (CLAUDE.md §2.6).
     pub fn from_json_str(source: &str) -> Result<Self, MigrateError> {
-        let mut doc: serde_json::Value = serde_json::from_str(source)
-            .map_err(|_| MigrateError::InvalidFile)?;
+        let mut doc: serde_json::Value =
+            serde_json::from_str(source).map_err(|_| MigrateError::InvalidFile)?;
         migrate::migrate_to_current(&mut doc)?;
         serde_json::from_value(doc).map_err(|err| MigrateError::StepFailed {
             from: migrate::CURRENT_SCHEMA_VERSION,
@@ -245,9 +256,9 @@ mod tests {
     #[test]
     fn round_trip_preserves_the_document() {
         let mut shortcut = Shortcut::new("Greet");
-        shortcut.steps.push(
-            Step::new("text.text").with_param("text", Content::Text("hello".into())),
-        );
+        shortcut
+            .steps
+            .push(Step::new("text.text").with_param("text", Content::Text("hello".into())));
         let json = shortcut.to_pretty_json().expect("serialize");
         let parsed = Shortcut::from_json_str(&json).expect("parse");
         assert_eq!(parsed, shortcut);

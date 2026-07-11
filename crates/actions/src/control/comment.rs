@@ -13,15 +13,16 @@ pub struct Comment;
 #[async_trait::async_trait]
 impl Action for Comment {
     fn def(&self) -> ActionDef {
-        ActionDef::pure("control.comment", Category::ControlFlow, "chat-bubble", ContentKind::Nothing)
-            .with_param(ParamDef::optional("text", ParamKind::Text))
+        ActionDef::pure(
+            "control.comment",
+            Category::ControlFlow,
+            "chat-bubble",
+            ContentKind::Nothing,
+        )
+        .with_param(ParamDef::optional("text", ParamKind::Text))
     }
 
-    async fn execute(
-        &self,
-        _ctx: &mut RunContext,
-        input: Content,
-    ) -> Result<Content, ActionError> {
+    async fn execute(&self, _ctx: &mut RunContext, input: Content) -> Result<Content, ActionError> {
         Ok(input)
     }
 }

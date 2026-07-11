@@ -15,8 +15,13 @@ pub struct FormatDate;
 #[async_trait::async_trait]
 impl Action for FormatDate {
     fn def(&self) -> ActionDef {
-        ActionDef::pure("date.format", Category::Date, "calendar-text", ContentKind::Text)
-            .with_param(ParamDef::required("format", ParamKind::Text))
+        ActionDef::pure(
+            "date.format",
+            Category::Date,
+            "calendar-text",
+            ContentKind::Text,
+        )
+        .with_param(ParamDef::required("format", ParamKind::Text))
     }
 
     async fn execute(&self, ctx: &mut RunContext, input: Content) -> Result<Content, ActionError> {
@@ -45,7 +50,10 @@ mod tests {
     async fn formats_with_a_pattern() {
         let date = Utc.with_ymd_and_hms(2026, 7, 11, 9, 5, 0).unwrap();
         let mut ctx = test_util::ctx_with(&[("format", Content::Text("%Y-%m-%d %H:%M".into()))]);
-        let out = FormatDate.execute(&mut ctx, Content::Date(date)).await.unwrap();
+        let out = FormatDate
+            .execute(&mut ctx, Content::Date(date))
+            .await
+            .unwrap();
         assert_eq!(out, Content::Text("2026-07-11 09:05".into()));
     }
 
@@ -53,7 +61,9 @@ mod tests {
     async fn invalid_pattern_is_rejected() {
         let mut ctx = test_util::ctx_with(&[("format", Content::Text("%Q!".into()))]);
         assert!(matches!(
-            FormatDate.execute(&mut ctx, Content::Date(Utc::now())).await,
+            FormatDate
+                .execute(&mut ctx, Content::Date(Utc::now()))
+                .await,
             Err(ActionError::InvalidParam { .. })
         ));
     }

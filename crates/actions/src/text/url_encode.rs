@@ -13,8 +13,9 @@ pub struct UrlEncode;
 #[async_trait::async_trait]
 impl Action for UrlEncode {
     fn def(&self) -> ActionDef {
-        ActionDef::pure("text.url_encode", Category::Text, "link", ContentKind::Text)
-            .with_param(ParamDef::required("mode", ParamKind::Enum(&["encode", "decode"])))
+        ActionDef::pure("text.url_encode", Category::Text, "link", ContentKind::Text).with_param(
+            ParamDef::required("mode", ParamKind::Enum(&["encode", "decode"])),
+        )
     }
 
     async fn execute(&self, ctx: &mut RunContext, input: Content) -> Result<Content, ActionError> {
@@ -54,7 +55,10 @@ mod tests {
             .unwrap();
         assert!(!encoded.contains(' '));
         let mut ctx = test_util::ctx_with(&[("mode", Content::Text("decode".into()))]);
-        let decoded = UrlEncode.execute(&mut ctx, Content::Text(encoded)).await.unwrap();
+        let decoded = UrlEncode
+            .execute(&mut ctx, Content::Text(encoded))
+            .await
+            .unwrap();
         assert_eq!(decoded, Content::Text(original.into()));
     }
 }

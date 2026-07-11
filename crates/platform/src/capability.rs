@@ -15,9 +15,7 @@ use serde::{Deserialize, Serialize};
 use crate::support::Os;
 
 /// A probeable runtime capability that actions may require.
-#[derive(
-    Debug, Clone, Copy, PartialEq, Eq, Hash, PartialOrd, Ord, Serialize, Deserialize,
-)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, PartialOrd, Ord, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub enum Capability {
     /// Synthetic keyboard/mouse events (X11 native, Wayland via ydotool/libei,
@@ -103,7 +101,11 @@ impl CapabilitySnapshot {
     /// A snapshot with no known constraints for `os`.
     #[must_use]
     pub fn unconstrained(os: Os) -> Self {
-        Self { os, environment: None, capabilities: BTreeMap::new() }
+        Self {
+            os,
+            environment: None,
+            capabilities: BTreeMap::new(),
+        }
     }
 
     /// Status for a capability; absent entries are [`CapabilityStatus::Available`].
@@ -146,13 +148,19 @@ mod tests {
             capabilities: BTreeMap::new(),
         };
         assert_eq!(snap.os_label(), "Linux (Wayland)");
-        assert_eq!(CapabilitySnapshot::unconstrained(Os::MacOs).os_label(), "macOS");
+        assert_eq!(
+            CapabilitySnapshot::unconstrained(Os::MacOs).os_label(),
+            "macOS"
+        );
     }
 
     #[test]
     fn absent_capability_defaults_to_available() {
         let snap = CapabilitySnapshot::unconstrained(Os::Windows);
-        assert_eq!(snap.status(Capability::InputInjection), CapabilityStatus::Available);
+        assert_eq!(
+            snap.status(Capability::InputInjection),
+            CapabilityStatus::Available
+        );
     }
 
     #[test]

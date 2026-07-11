@@ -13,8 +13,9 @@ pub struct TrimText;
 #[async_trait::async_trait]
 impl Action for TrimText {
     fn def(&self) -> ActionDef {
-        ActionDef::pure("text.trim", Category::Text, "scissors", ContentKind::Text)
-            .with_param(ParamDef::optional("mode", ParamKind::Enum(&["both", "start", "end"])))
+        ActionDef::pure("text.trim", Category::Text, "scissors", ContentKind::Text).with_param(
+            ParamDef::optional("mode", ParamKind::Enum(&["both", "start", "end"])),
+        )
     }
 
     async fn execute(&self, ctx: &mut RunContext, input: Content) -> Result<Content, ActionError> {
@@ -44,7 +45,10 @@ mod tests {
     #[tokio::test]
     async fn trims_both_ends_by_default() {
         let mut ctx = test_util::ctx();
-        let out = TrimText.execute(&mut ctx, Content::Text("  x  ".into())).await.unwrap();
+        let out = TrimText
+            .execute(&mut ctx, Content::Text("  x  ".into()))
+            .await
+            .unwrap();
         assert_eq!(out, Content::Text("x".into()));
     }
 }

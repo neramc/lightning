@@ -132,13 +132,27 @@ mod tests {
     fn greater_than_requires_numbers() {
         let lhs = Content::Text("abc".into());
         assert!(evaluate(CondOp::Gt, &lhs, Some(&Content::Number(1.0))).is_err());
-        assert!(evaluate(CondOp::Gt, &Content::Number(2.0), Some(&Content::Number(1.0))).unwrap());
+        assert!(
+            evaluate(
+                CondOp::Gt,
+                &Content::Number(2.0),
+                Some(&Content::Number(1.0))
+            )
+            .unwrap()
+        );
     }
 
     #[test]
     fn contains_works_on_text_and_lists() {
         let text = Content::Text("hello world".into());
-        assert!(evaluate(CondOp::Contains, &text, Some(&Content::Text("world".into()))).unwrap());
+        assert!(
+            evaluate(
+                CondOp::Contains,
+                &text,
+                Some(&Content::Text("world".into()))
+            )
+            .unwrap()
+        );
         let list = Content::List(vec![Content::Number(1.0), Content::Text("x".into())]);
         assert!(evaluate(CondOp::Contains, &list, Some(&Content::Text("1".into()))).unwrap());
         assert!(!evaluate(CondOp::Contains, &list, Some(&Content::Text("y".into()))).unwrap());

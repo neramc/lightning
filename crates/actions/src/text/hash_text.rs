@@ -14,11 +14,9 @@ pub struct HashText;
 #[async_trait::async_trait]
 impl Action for HashText {
     fn def(&self) -> ActionDef {
-        ActionDef::pure("text.hash", Category::Text, "hash", ContentKind::Text)
-            .with_param(ParamDef::required(
-                "algorithm",
-                ParamKind::Enum(&["md5", "sha1", "sha256"]),
-            ))
+        ActionDef::pure("text.hash", Category::Text, "hash", ContentKind::Text).with_param(
+            ParamDef::required("algorithm", ParamKind::Enum(&["md5", "sha1", "sha256"])),
+        )
     }
 
     async fn execute(&self, ctx: &mut RunContext, input: Content) -> Result<Content, ActionError> {
@@ -48,7 +46,10 @@ mod tests {
     #[tokio::test]
     async fn sha256_matches_known_vector() {
         let mut ctx = test_util::ctx_with(&[("algorithm", Content::Text("sha256".into()))]);
-        let out = HashText.execute(&mut ctx, Content::Text("abc".into())).await.unwrap();
+        let out = HashText
+            .execute(&mut ctx, Content::Text("abc".into()))
+            .await
+            .unwrap();
         assert_eq!(
             out,
             Content::Text(
@@ -60,7 +61,13 @@ mod tests {
     #[tokio::test]
     async fn md5_matches_known_vector() {
         let mut ctx = test_util::ctx_with(&[("algorithm", Content::Text("md5".into()))]);
-        let out = HashText.execute(&mut ctx, Content::Text("abc".into())).await.unwrap();
-        assert_eq!(out, Content::Text("900150983cd24fb0d6963f7d28e17f72".into()));
+        let out = HashText
+            .execute(&mut ctx, Content::Text("abc".into()))
+            .await
+            .unwrap();
+        assert_eq!(
+            out,
+            Content::Text("900150983cd24fb0d6963f7d28e17f72".into())
+        );
     }
 }

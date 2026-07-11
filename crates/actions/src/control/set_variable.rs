@@ -13,8 +13,13 @@ pub struct SetVariable;
 #[async_trait::async_trait]
 impl Action for SetVariable {
     fn def(&self) -> ActionDef {
-        ActionDef::pure("control.set_variable", Category::ControlFlow, "bookmark", ContentKind::Nothing)
-            .with_param(ParamDef::required("name", ParamKind::Text))
+        ActionDef::pure(
+            "control.set_variable",
+            Category::ControlFlow,
+            "bookmark",
+            ContentKind::Nothing,
+        )
+        .with_param(ParamDef::required("name", ParamKind::Text))
     }
 
     async fn execute(&self, ctx: &mut RunContext, input: Content) -> Result<Content, ActionError> {
@@ -39,7 +44,10 @@ mod tests {
     #[tokio::test]
     async fn stores_and_passes_through() {
         let mut ctx = test_util::ctx_with(&[("name", Content::Text("x".into()))]);
-        let out = SetVariable.execute(&mut ctx, Content::Number(7.0)).await.unwrap();
+        let out = SetVariable
+            .execute(&mut ctx, Content::Number(7.0))
+            .await
+            .unwrap();
         assert_eq!(out, Content::Number(7.0));
         assert_eq!(ctx.var("x"), Some(&Content::Number(7.0)));
     }

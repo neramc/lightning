@@ -78,7 +78,10 @@ impl Engine {
     /// An engine dispatching to `invoker`.
     #[must_use]
     pub fn new(invoker: Arc<dyn ActionInvoker>) -> Self {
-        Self { invoker, resolver: None }
+        Self {
+            invoker,
+            resolver: None,
+        }
     }
 
     /// Attach a `Run Shortcut` resolver, builder-style.
@@ -96,7 +99,9 @@ impl Engine {
     ) -> Result<Content, ActionError> {
         ctx.arm_deadline();
         tracing::info!(shortcut = %shortcut.name, run_id = %ctx.run_id, "run started");
-        let flow = self.run_steps(&shortcut.steps, ctx, Content::Nothing).await?;
+        let flow = self
+            .run_steps(&shortcut.steps, ctx, Content::Nothing)
+            .await?;
         tracing::info!(run_id = %ctx.run_id, "run finished");
         Ok(flow.into_value())
     }
@@ -145,7 +150,9 @@ impl Engine {
                             run_id: ctx.run_id,
                             step: step.uuid,
                             action_id: step.action_id.clone(),
-                            phase: StepPhase::Finished { preview: value.preview(120) },
+                            phase: StepPhase::Finished {
+                                preview: value.preview(120),
+                            },
                         });
                     }
                     return Ok(flow);
@@ -159,7 +166,9 @@ impl Engine {
                             run_id: ctx.run_id,
                             step: step.uuid,
                             action_id: step.action_id.clone(),
-                            phase: StepPhase::Failed { message: err.to_string() },
+                            phase: StepPhase::Failed {
+                                message: err.to_string(),
+                            },
                         });
                         return Err(err);
                     }
@@ -172,12 +181,17 @@ impl Engine {
                             run_id: ctx.run_id,
                             step: step.uuid,
                             action_id: step.action_id.clone(),
-                            phase: StepPhase::Skipped { message: err.to_string() },
+                            phase: StepPhase::Skipped {
+                                message: err.to_string(),
+                            },
                         });
                         // Pass the previous output through so the chain survives.
                         return Ok(Flow::Continue(input));
                     }
-                    ErrorPolicy::Retry { attempts, backoff_ms } => {
+                    ErrorPolicy::Retry {
+                        attempts,
+                        backoff_ms,
+                    } => {
                         if attempt >= *attempts {
                             ctx.log.error(
                                 Some(step.uuid),
@@ -187,7 +201,9 @@ impl Engine {
                                 run_id: ctx.run_id,
                                 step: step.uuid,
                                 action_id: step.action_id.clone(),
-                                phase: StepPhase::Failed { message: err.to_string() },
+                                phase: StepPhase::Failed {
+                                    message: err.to_string(),
+                                },
                             });
                             return Err(err);
                         }
@@ -307,7 +323,9 @@ impl Engine {
         }
         let count = count as u64;
         if count > ctx.limits.loop_cap {
-            return Err(ActionError::LoopCapExceeded { cap: ctx.limits.loop_cap });
+            return Err(ActionError::LoopCapExceeded {
+                cap: ctx.limits.loop_cap,
+            });
         }
         let body = step.branch("body").cloned().unwrap_or_default_branch();
         let mut results = Vec::new();
@@ -335,7 +353,9 @@ impl Engine {
         let params = self.resolve_params(step, ctx)?;
         let items = params.get("items").cloned().unwrap_or(input).into_items();
         if items.len() as u64 > ctx.limits.loop_cap {
-            return Err(ActionError::LoopCapExceeded { cap: ctx.limits.loop_cap });
+            return Err(ActionError::LoopCapExceeded {
+                cap: ctx.limits.loop_cap,
+            });
         }
         let body = step.branch("body").cloned().unwrap_or_default_branch();
         let mut results = Vec::new();
@@ -383,7 +403,9 @@ impl Engine {
             }
             iterations += 1;
             if iterations > ctx.limits.loop_cap {
-                return Err(ActionError::LoopCapExceeded { cap: ctx.limits.loop_cap });
+                return Err(ActionError::LoopCapExceeded {
+                    cap: ctx.limits.loop_cap,
+                });
             }
             match self.run_steps(&body.steps, ctx, current).await? {
                 Flow::Continue(value) => current = value,
@@ -408,14 +430,18 @@ impl Engine {
             .as_text()?;
         let depth = ctx.depth + 1;
         if depth > ctx.limits.max_recursion {
-            return Err(ActionError::RecursionLimit { depth, max: ctx.limits.max_recursion });
+            return Err(ActionError::RecursionLimit {
+                depth,
+                max: ctx.limits.max_recursion,
+            });
         }
         let resolver = self.resolver.as_ref().ok_or_else(|| {
             ActionError::Failed("Run Shortcut is not available in this context".into())
         })?;
-        let child = resolver.resolve(&reference).await.ok_or_else(|| {
-            ActionError::Failed(format!("shortcut '{reference}' not found"))
-        })?;
+        let child = resolver
+            .resolve(&reference)
+            .await
+            .ok_or_else(|| ActionError::Failed(format!("shortcut '{reference}' not found")))?;
         ctx.depth = depth;
         let result = self.run_steps(&child.steps, ctx, input).await;
         ctx.depth -= 1;
@@ -430,6 +456,9 @@ trait BranchExt {
 
 impl BranchExt for Option<crate::shortcut::Branch> {
     fn unwrap_or_default_branch(self) -> crate::shortcut::Branch {
-        self.unwrap_or(crate::shortcut::Branch { label: "body".to_owned(), steps: Vec::new() })
+        self.unwrap_or(crate::shortcut::Branch {
+            label: "body".to_owned(),
+            steps: Vec::new(),
+        })
     }
 }

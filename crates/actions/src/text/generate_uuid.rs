@@ -13,7 +13,12 @@ pub struct GenerateUuid;
 #[async_trait::async_trait]
 impl Action for GenerateUuid {
     fn def(&self) -> ActionDef {
-        ActionDef::pure("text.generate_uuid", Category::Text, "fingerprint", ContentKind::Text)
+        ActionDef::pure(
+            "text.generate_uuid",
+            Category::Text,
+            "fingerprint",
+            ContentKind::Text,
+        )
     }
 
     async fn execute(
@@ -34,7 +39,10 @@ mod tests {
     #[tokio::test]
     async fn output_parses_as_uuid() {
         let mut ctx = test_util::ctx();
-        let out = GenerateUuid.execute(&mut ctx, Content::Nothing).await.unwrap();
+        let out = GenerateUuid
+            .execute(&mut ctx, Content::Nothing)
+            .await
+            .unwrap();
         let text = out.as_text().unwrap();
         assert!(uuid::Uuid::parse_str(&text).is_ok());
     }

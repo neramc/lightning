@@ -13,12 +13,17 @@ pub struct TimeBetweenDates;
 #[async_trait::async_trait]
 impl Action for TimeBetweenDates {
     fn def(&self) -> ActionDef {
-        ActionDef::pure("date.time_between", Category::Date, "calendar-clock", ContentKind::Number)
-            .with_param(ParamDef::required("other", ParamKind::Date))
-            .with_param(ParamDef::optional(
-                "unit",
-                ParamKind::Enum(&["seconds", "minutes", "hours", "days"]),
-            ))
+        ActionDef::pure(
+            "date.time_between",
+            Category::Date,
+            "calendar-clock",
+            ContentKind::Number,
+        )
+        .with_param(ParamDef::required("other", ParamKind::Date))
+        .with_param(ParamDef::optional(
+            "unit",
+            ParamKind::Enum(&["seconds", "minutes", "hours", "days"]),
+        ))
     }
 
     async fn execute(&self, ctx: &mut RunContext, input: Content) -> Result<Content, ActionError> {
@@ -65,7 +70,10 @@ mod tests {
             ("other", Content::Date(b)),
             ("unit", Content::Text("hours".into())),
         ]);
-        let out = TimeBetweenDates.execute(&mut ctx, Content::Date(a)).await.unwrap();
+        let out = TimeBetweenDates
+            .execute(&mut ctx, Content::Date(a))
+            .await
+            .unwrap();
         assert_eq!(out, Content::Number(30.0));
     }
 }

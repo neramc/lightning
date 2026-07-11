@@ -58,7 +58,10 @@ impl PlatformOps for BsdPlatform {
             if x11 {
                 CapabilityStatus::Available
             } else {
-                CapabilityStatus::Unavailable { reason: "no X11 session".into(), fix: None }
+                CapabilityStatus::Unavailable {
+                    reason: "no X11 session".into(),
+                    fix: None,
+                }
             },
         );
         snapshot = snapshot.with(
@@ -133,7 +136,9 @@ impl PlatformOps for BsdPlatform {
         if status.success() {
             Ok(())
         } else {
-            Err(PlatformError::CommandFailed(format!("xclip exited with {status}")))
+            Err(PlatformError::CommandFailed(format!(
+                "xclip exited with {status}"
+            )))
         }
     }
 }
