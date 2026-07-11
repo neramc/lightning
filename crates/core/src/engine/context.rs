@@ -194,13 +194,14 @@ impl RunContext {
 
     // ── step params (set by the engine around each invoke) ─────────────────
 
-    /// Replace the current step's resolved params. Engine-internal.
-    pub(crate) fn set_params(&mut self, params: BTreeMap<String, Content>) {
+    /// Replace the current step's resolved params. Called by the engine
+    /// around each invoke, and by action unit tests.
+    pub fn set_step_params(&mut self, params: BTreeMap<String, Content>) {
         self.params = params;
     }
 
-    /// Clear the current step's params. Engine-internal.
-    pub(crate) fn clear_params(&mut self) {
+    /// Clear the current step's params.
+    pub fn clear_step_params(&mut self) {
         self.params.clear();
     }
 

@@ -224,9 +224,9 @@ impl Engine {
             "control.run_shortcut" => self.exec_run_shortcut(step, ctx, input).await,
             _ => {
                 let params = self.resolve_params(step, ctx)?;
-                ctx.set_params(params);
+                ctx.set_step_params(params);
                 let result = self.invoker.invoke(&step.action_id, ctx, input).await;
-                ctx.clear_params();
+                ctx.clear_step_params();
                 Ok(Flow::Continue(result?))
             }
         }
