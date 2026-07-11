@@ -1,0 +1,122 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Copyright (C) 2026 neramc
+
+[workspace]
+resolver = "2"
+members = [
+  "apps/desktop/src-tauri",
+  "crates/core",
+  "crates/actions",
+  "crates/triggers",
+  "crates/platform",
+  "crates/platform-windows",
+  "crates/platform-macos",
+  "crates/platform-linux",
+  "crates/platform-bsd",
+  "crates/scripting",
+  "crates/store",
+  "crates/ipc-types",
+]
+# `cargo check`/`cargo test` without flags skips the Tauri shell so that pure
+# crates build on machines without webkit2gtk. CI runs `--workspace` explicitly.
+default-members = [
+  "crates/core",
+  "crates/actions",
+  "crates/triggers",
+  "crates/platform",
+  "crates/platform-windows",
+  "crates/platform-macos",
+  "crates/platform-linux",
+  "crates/platform-bsd",
+  "crates/scripting",
+  "crates/store",
+  "crates/ipc-types",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+license = "GPL-3.0-only"
+authors = ["neramc"]
+repository = "https://github.com/neramc/lightning"
+homepage = "https://github.com/neramc/lightning"
+
+[workspace.dependencies]
+lightning-core = { path = "crates/core" }
+lightning-actions = { path = "crates/actions" }
+lightning-triggers = { path = "crates/triggers" }
+lightning-platform = { path = "crates/platform" }
+lightning-platform-windows = { path = "crates/platform-windows" }
+lightning-platform-macos = { path = "crates/platform-macos" }
+lightning-platform-linux = { path = "crates/platform-linux" }
+lightning-platform-bsd = { path = "crates/platform-bsd" }
+lightning-scripting = { path = "crates/scripting" }
+lightning-store = { path = "crates/store" }
+lightning-ipc-types = { path = "crates/ipc-types" }
+
+serde = { version = "1", features = ["derive"] }
+serde_json = { version = "1", features = ["preserve_order"] }
+thiserror = "2"
+anyhow = "1"
+tokio = { version = "1", features = [
+  "rt-multi-thread",
+  "macros",
+  "sync",
+  "time",
+  "fs",
+  "process",
+  "signal",
+] }
+tokio-util = "0.7"
+futures = "0.3"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+tracing-appender = "0.2"
+uuid = { version = "1", features = ["v4", "serde"] }
+chrono = { version = "0.4", features = ["serde"] }
+regex = "1"
+rand = "0.9"
+sha2 = "0.10"
+sha1 = "0.10"
+md-5 = "0.10"
+hex = "0.4"
+base64 = "0.22"
+urlencoding = "2"
+dirs = "5"
+which = "6"
+notify = "7"
+rusqlite = { version = "0.32", features = ["bundled"] }
+rquickjs = { version = "0.6", features = ["futures"] }
+specta = { version = "=2.0.0-rc.22", features = ["derive"] }
+specta-typescript = "0.0.9"
+
+tauri = { version = "2", features = ["tray-icon"] }
+tauri-build = "2"
+tauri-specta = { version = "=2.0.0-rc.21", features = ["derive", "typescript"] }
+tauri-plugin-global-shortcut = "2"
+tauri-plugin-autostart = "2"
+tauri-plugin-single-instance = "2"
+tauri-plugin-deep-link = "2"
+tauri-plugin-notification = "2"
+tauri-plugin-dialog = "2"
+tauri-plugin-fs = "2"
+tauri-plugin-shell = "2"
+tauri-plugin-clipboard-manager = "2"
+
+# dev-dependencies
+insta = { version = "1", features = ["json"] }
+tempfile = "3"
+
+[workspace.lints.rust]
+unused_must_use = "deny"
+
+[workspace.lints.clippy]
+unwrap_used = "deny"
+dbg_macro = "deny"
+todo = "deny"
+print_stdout = "deny"
+
+[profile.release]
+lto = "thin"
+codegen-units = 1
+strip = "symbols"

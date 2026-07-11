@@ -1,0 +1,9 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Copyright (C) 2026 neramc
+#
+# Pinned stable toolchain (CLAUDE.md §4). Tier-1 cross-check targets are
+# added on demand by `pnpm check:targets` so a fresh clone stays lean.
+[toolchain]
+channel = "1.94.1"
+components = ["rustfmt", "clippy"]
+profile = "minimal"

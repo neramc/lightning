@@ -1,0 +1,15 @@
+# Default owner
+* @neramc
+
+# Platform crates — platform owners are auto-assigned on PRs (CLAUDE.md §12)
+/crates/platform-windows/ @neramc
+/crates/platform-macos/ @neramc
+/crates/platform-linux/ @neramc
+/crates/platform-bsd/ @neramc
+
+# Windows installer suite
+/installer/windows/ @neramc
+
+# Release & packaging
+/.github/workflows/release.yml @neramc
+/packaging/ @neramc

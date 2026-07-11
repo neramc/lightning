@@ -1,0 +1,115 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Copyright (C) 2026 neramc
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  version-consistency:
+    name: Version consistency
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Verify one version everywhere matches the tag
+        run: node scripts/sync-version.mjs --check "${GITHUB_REF_NAME#v}"
+
+  build:
+    name: Build ${{ matrix.name }}
+    needs: version-consistency
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { name: 'Windows x64', os: windows-2022, target: x86_64-pc-windows-msvc }
+          - { name: 'Windows ARM64', os: windows-2022, target: aarch64-pc-windows-msvc }
+          - { name: 'macOS Apple Silicon', os: macos-14, target: aarch64-apple-darwin }
+          - { name: 'macOS Intel', os: macos-14, target: x86_64-apple-darwin }
+          - { name: 'Linux x64 (.deb + AppImage)', os: ubuntu-24.04, target: x86_64-unknown-linux-gnu }
+          - { name: 'Linux ARM64', os: ubuntu-24.04-arm, target: aarch64-unknown-linux-gnu }
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - name: Tauri system deps (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev build-essential \
+            libssl-dev libayatana-appindicator3-dev librsvg2-dev
+      - run: pnpm install --frozen-lockfile
+      - name: Build app bundle
+        run: pnpm build
+      # Signing: all keys live exclusively in GitHub Actions secrets (CLAUDE.md §2).
+      - name: Sign (Windows Authenticode)
+        if: runner.os == 'Windows'
+        run: echo "::notice::signtool step — uses secrets.WINDOWS_CERT_*"
+      - name: Sign + notarize + staple (macOS)
+        if: runner.os == 'macOS'
+        run: echo "::notice::codesign/notarytool step — uses secrets.APPLE_*"
+        env:
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-${{ matrix.target }}
+          path: apps/desktop/src-tauri/target/release/bundle/**
+          if-no-files-found: warn
+
+  installer:
+    name: Windows installer (embedded payload)
+    needs: build
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-x86_64-pc-windows-msvc
+          path: installer/windows/payload
+      - run: dotnet build installer/windows/Lightning.Installer.sln -c Release
+      - run: dotnet test installer/windows -c Release
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows-installer
+          path: installer/windows/Lightning.Installer/bin/Release/**
+
+  publish:
+    name: Draft release · manual approval · publish
+    needs: [build, installer]
+    runs-on: ubuntu-24.04
+    environment: release # manual approval gate
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+      - name: Generate updater manifests (latest.json per target/arch/channel)
+        run: node scripts/gen-latest-json.mjs dist
+      - name: Sign updater manifests (minisign)
+        run: echo "::notice::minisign step — uses secrets.MINISIGN_SECRET_KEY"
+      - name: Draft GitHub release with Conventional Commits changelog
+        uses: softprops/action-gh-release@v2
+        with:
+          draft: true
+          generate_release_notes: true
+          files: dist/**/*
+      - name: Open packaging bump PRs (AUR / ebuild / port)
+        run: echo "::notice::packaging bump scripts in packaging/"

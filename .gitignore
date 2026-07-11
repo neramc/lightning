@@ -1,0 +1,34 @@
+# Node
+node_modules/
+dist/
+.turbo/
+*.tsbuildinfo
+coverage/
+
+# Rust
+target/
+
+# Tauri
+apps/desktop/src-tauri/gen/
+
+# .NET
+bin/
+obj/
+*.user
+*.binlog
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# Never commit secrets (CLAUDE.md §2) — signing keys, tokens, env files
+.env
+.env.*
+*.pem
+*.key
+*.pfx
+*.p12
+minisign.sec
