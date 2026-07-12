@@ -1,0 +1,25 @@
+{
+  "name": "@lightning/i18n",
+  "version": "0.1.0",
+  "private": true,
+  "license": "GPL-3.0-only",
+  "type": "module",
+  "description": "Locales — en is the source, ko must be 100% before release",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "lint": "eslint src",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "i18next": "^25.2.0",
+    "react-i18next": "^15.5.0"
+  },
+  "devDependencies": {
+    "@lightning/config": "workspace:*",
+    "typescript": "^5.8.0",
+    "vitest": "^3.2.0"
+  }
+}

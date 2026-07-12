@@ -1,0 +1,37 @@
+{
+  "sections": {
+    "general": "General",
+    "privacy": "Privacy",
+    "updates": "Updates",
+    "about": "About"
+  },
+  "general": {
+    "language": "Language",
+    "theme": "Appearance",
+    "themeSystem": "Follow system",
+    "themeLight": "Light",
+    "themeDark": "Dark",
+    "autostart": "Start at login",
+    "tray": "Keep running in the tray when the window closes"
+  },
+  "privacy": {
+    "grantedTitle": "Permissions granted to shortcuts",
+    "revoke": "Revoke",
+    "noGrants": "No shortcuts hold permissions yet",
+    "crashReports": "Crash reports (opt-in, stored locally, inspect before sending)",
+    "telemetryNote": "Lightning collects no telemetry."
+  },
+  "updates": {
+    "channel": "Update channel",
+    "stable": "Stable",
+    "beta": "Beta",
+    "nightly": "Nightly",
+    "check": "Check for updates",
+    "managedByPackageManager": "Updates are managed by your package manager on this install."
+  },
+  "about": {
+    "version": "Version {{version}}",
+    "license": "GNU General Public License v3.0",
+    "thirdParty": "Third-party notices"
+  }
+}

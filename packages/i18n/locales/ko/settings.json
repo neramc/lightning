@@ -1,0 +1,37 @@
+{
+  "sections": {
+    "general": "일반",
+    "privacy": "개인정보 보호",
+    "updates": "업데이트",
+    "about": "정보"
+  },
+  "general": {
+    "language": "언어",
+    "theme": "화면 모드",
+    "themeSystem": "시스템 설정 따르기",
+    "themeLight": "라이트",
+    "themeDark": "다크",
+    "autostart": "로그인 시 시작",
+    "tray": "창을 닫아도 트레이에서 계속 실행"
+  },
+  "privacy": {
+    "grantedTitle": "단축 흐름에 부여된 권한",
+    "revoke": "회수",
+    "noGrants": "권한을 가진 단축 흐름이 아직 없습니다",
+    "crashReports": "오류 보고 (선택 사항, 로컬 저장, 전송 전 확인 가능)",
+    "telemetryNote": "Lightning은 어떤 사용 데이터도 수집하지 않습니다."
+  },
+  "updates": {
+    "channel": "업데이트 채널",
+    "stable": "안정",
+    "beta": "베타",
+    "nightly": "나이틀리",
+    "check": "업데이트 확인",
+    "managedByPackageManager": "이 설치본의 업데이트는 패키지 관리자가 담당합니다."
+  },
+  "about": {
+    "version": "버전 {{version}}",
+    "license": "GNU 일반 공중 사용 허가서 v3.0",
+    "thirdParty": "서드파티 고지"
+  }
+}

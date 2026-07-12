@@ -1,0 +1,4 @@
+{
+  "extends": "@lightning/config/tsconfig.base.json",
+  "include": ["src"]
+}

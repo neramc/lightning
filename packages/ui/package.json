@@ -1,0 +1,28 @@
+{
+  "name": "@lightning/ui",
+  "version": "0.1.0",
+  "private": true,
+  "license": "GPL-3.0-only",
+  "type": "module",
+  "description": "Lightning design system: tokens, motion presets, primitives",
+  "exports": {
+    ".": "./src/index.ts",
+    "./tokens": "./src/tokens.ts",
+    "./motion": "./src/motion.ts"
+  },
+  "scripts": {
+    "lint": "eslint src",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "motion": "^12.19.0",
+    "react": "^19.1.0"
+  },
+  "devDependencies": {
+    "@lightning/config": "workspace:*",
+    "@types/react": "^19.1.0",
+    "typescript": "^5.8.0",
+    "vitest": "^3.2.0"
+  }
+}

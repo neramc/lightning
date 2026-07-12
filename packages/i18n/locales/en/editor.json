@@ -1,0 +1,35 @@
+{
+  "library": {
+    "title": "Actions",
+    "search": "Search actions…",
+    "empty": "No actions match"
+  },
+  "canvas": {
+    "empty": "Drag actions here to build your shortcut",
+    "addAction": "Add Action",
+    "deleteStep": "Delete step",
+    "configureStep": "Configure step"
+  },
+  "params": {
+    "chooseVariable": "Choose variable…",
+    "magicOutput": "Output of step {{index}}",
+    "true": "On",
+    "false": "Off"
+  },
+  "errorPolicy": {
+    "label": "If this step fails",
+    "stop": "Stop the run",
+    "continue": "Continue anyway",
+    "retry": "Retry {{count}} times"
+  },
+  "run": {
+    "panelTitle": "Run",
+    "logEmpty": "Run output appears here"
+  },
+  "trigger": {
+    "pickerTitle": "Choose a trigger",
+    "interval": "Every interval",
+    "schedule": "At a time of day",
+    "fileChanged": "When a file changes"
+  }
+}

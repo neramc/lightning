@@ -1,0 +1,47 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Lightning",
+  "version": "0.1.0",
+  "identifier": "com.neramc.lightning",
+  "build": {
+    "beforeDevCommand": "pnpm --filter @lightning/desktop dev:web",
+    "devUrl": "http://localhost:1420",
+    "beforeBuildCommand": "pnpm --filter @lightning/desktop build:web",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "windows": [
+      {
+        "label": "main",
+        "title": "Lightning",
+        "width": 1200,
+        "height": 780,
+        "minWidth": 900,
+        "minHeight": 600
+      }
+    ],
+    "security": {
+      "csp": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src ipc: http://ipc.localhost"
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": ["icons/icon.png"],
+    "category": "Productivity",
+    "shortDescription": "Shortcuts and automations for your desktop",
+    "longDescription": "Free, open-source, cross-platform shortcuts and automations — drag-and-drop action blocks, colorful gradient cards, and OS-level triggers.",
+    "linux": {
+      "deb": {
+        "depends": []
+      }
+    }
+  },
+  "plugins": {
+    "deep-link": {
+      "desktop": {
+        "schemes": ["lightning"]
+      }
+    }
+  }
+}

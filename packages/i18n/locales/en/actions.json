@@ -1,0 +1,68 @@
+{
+  "control": {
+    "if": { "name": "If", "description": "Branch on a condition" },
+    "repeat": { "name": "Repeat", "description": "Run the body a number of times" },
+    "repeat_each": { "name": "Repeat with Each", "description": "Run the body for every item" },
+    "while": { "name": "While", "description": "Repeat while a condition holds" },
+    "exit": { "name": "Exit Shortcut", "description": "Stop the shortcut here" },
+    "stop_output": { "name": "Stop and Output", "description": "Stop and return a value" },
+    "run_shortcut": { "name": "Run Shortcut", "description": "Run another shortcut inline" },
+    "comment": { "name": "Comment", "description": "Annotate the flow; does nothing" },
+    "nothing": { "name": "Nothing", "description": "Clear the current value" },
+    "wait": { "name": "Wait", "description": "Pause for a number of seconds", "params": { "seconds": "Seconds" } },
+    "get_type": { "name": "Get Type", "description": "Report the type of the input" },
+    "count": { "name": "Count", "description": "Count items, characters, words or lines", "params": { "unit": "Count" } },
+    "set_variable": { "name": "Set Variable", "description": "Store the input under a name", "params": { "name": "Variable name" } },
+    "get_variable": { "name": "Get Variable", "description": "Read a named variable", "params": { "name": "Variable name" } },
+    "add_to_variable": { "name": "Add to Variable", "description": "Append the input to a list variable", "params": { "name": "Variable name" } },
+    "show_result": { "name": "Show Result", "description": "Show a value in the run panel", "params": { "text": "Text" } },
+    "get_item_from_list": { "name": "Get Item from List", "description": "Pick the first, last, indexed or a random item", "params": { "which": "Item", "index": "Index" } }
+  },
+  "text": {
+    "text": { "name": "Text", "description": "A literal text value", "params": { "text": "Text" } },
+    "combine": { "name": "Combine Text", "description": "Join list items with a separator", "params": { "separator": "Separator" } },
+    "split": { "name": "Split Text", "description": "Split text into a list", "params": { "separator": "Separator" } },
+    "replace": { "name": "Replace Text", "description": "Replace matches, literally or with a regex", "params": { "find": "Find", "replace": "Replace with", "regex": "Regular expression", "caseSensitive": "Case sensitive" } },
+    "change_case": { "name": "Change Case", "description": "lowercase, UPPERCASE, Capitalize or Sentence case", "params": { "case": "Case" } },
+    "trim": { "name": "Trim", "description": "Strip surrounding whitespace", "params": { "mode": "Trim" } },
+    "statistics": { "name": "Text Statistics", "description": "Characters, words and lines" },
+    "generate_uuid": { "name": "Generate UUID", "description": "A fresh unique identifier" },
+    "url_encode": { "name": "URL Encode", "description": "Percent-encode or decode text", "params": { "mode": "Mode" } },
+    "base64": { "name": "Base64", "description": "Encode or decode Base64 text", "params": { "mode": "Mode" } },
+    "hash": { "name": "Hash Text", "description": "MD5, SHA-1 or SHA-256 digest", "params": { "algorithm": "Algorithm" } }
+  },
+  "math": {
+    "calculate": { "name": "Calculate", "description": "Arithmetic on the input number", "params": { "operation": "Operation", "operand": "Number" } },
+    "random": { "name": "Random Number", "description": "A random number in a range", "params": { "min": "Minimum", "max": "Maximum", "integer": "Whole numbers" } },
+    "round": { "name": "Round Number", "description": "Round to a number of decimals", "params": { "mode": "Mode", "decimals": "Decimals" } },
+    "list_statistics": { "name": "List Statistics", "description": "Min, max, average, sum, median or count", "params": { "operation": "Statistic" } }
+  },
+  "date": {
+    "current": { "name": "Current Date", "description": "The date and time right now" },
+    "adjust": { "name": "Adjust Date", "description": "Add or subtract time from a date", "params": { "amount": "Amount", "unit": "Unit", "direction": "Direction" } },
+    "format": { "name": "Format Date", "description": "Format a date as text", "params": { "format": "Pattern" } },
+    "time_between": { "name": "Time Between Dates", "description": "Difference between two dates", "params": { "other": "Other date", "unit": "Unit" } }
+  },
+  "scripting": {
+    "run_javascript": { "name": "Run JavaScript", "description": "Run sandboxed JavaScript over the input", "params": { "script": "Script", "timeoutMs": "Timeout (ms)" } }
+  },
+  "categories": {
+    "controlFlow": "Control Flow",
+    "text": "Text",
+    "math": "Math",
+    "date": "Date & Time",
+    "web": "Web",
+    "files": "Files",
+    "clipboard": "Clipboard",
+    "images": "Images",
+    "documents": "Documents",
+    "media": "Media",
+    "appsWindows": "Apps & Windows",
+    "system": "System",
+    "input": "Input",
+    "scripting": "Scripting",
+    "communication": "Communication",
+    "productivity": "Productivity",
+    "location": "Location"
+  }
+}

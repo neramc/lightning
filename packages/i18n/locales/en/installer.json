@@ -1,0 +1,44 @@
+{
+  "welcome": {
+    "title": "Install Lightning",
+    "subtitle": "Shortcuts and automations for your real computer"
+  },
+  "license": {
+    "title": "License",
+    "accept": "I accept the GNU General Public License v3.0"
+  },
+  "location": {
+    "title": "Install location",
+    "browse": "Browse…",
+    "perUser": "Install for me only (recommended)",
+    "perMachine": "Install for all users (administrator)"
+  },
+  "options": {
+    "title": "Options",
+    "autostart": "Start Lightning at login",
+    "addToPath": "Add the lightning CLI to PATH",
+    "fileAssociation": "Open .lightning files with Lightning",
+    "protocol": "Handle lightning:// links",
+    "startMenu": "Create a Start menu shortcut",
+    "desktop": "Create a desktop shortcut"
+  },
+  "progress": {
+    "installing": "Installing…",
+    "done": "Lightning is installed",
+    "launch": "Launch Lightning"
+  },
+  "uninstall": {
+    "title": "Uninstall Lightning",
+    "keepData": "Keep my shortcuts and settings",
+    "removeData": "Also delete my shortcuts and settings",
+    "confirm": "Uninstall",
+    "done": "Lightning was removed"
+  },
+  "buttons": {
+    "next": "Next",
+    "back": "Back",
+    "install": "Install",
+    "cancel": "Cancel",
+    "finish": "Finish"
+  }
+}

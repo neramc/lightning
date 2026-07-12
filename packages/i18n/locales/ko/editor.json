@@ -1,0 +1,35 @@
+{
+  "library": {
+    "title": "동작",
+    "search": "동작 검색…",
+    "empty": "일치하는 동작이 없습니다"
+  },
+  "canvas": {
+    "empty": "여기에 동작을 끌어와 단축 흐름을 만드세요",
+    "addAction": "동작 추가",
+    "deleteStep": "단계 삭제",
+    "configureStep": "단계 설정"
+  },
+  "params": {
+    "chooseVariable": "변수 선택…",
+    "magicOutput": "{{index}}번째 단계의 출력",
+    "true": "켬",
+    "false": "끔"
+  },
+  "errorPolicy": {
+    "label": "이 단계가 실패하면",
+    "stop": "실행 중지",
+    "continue": "계속 진행",
+    "retry": "{{count}}회 재시도"
+  },
+  "run": {
+    "panelTitle": "실행",
+    "logEmpty": "실행 결과가 여기에 표시됩니다"
+  },
+  "trigger": {
+    "pickerTitle": "트리거 선택",
+    "interval": "일정 간격마다",
+    "schedule": "지정한 시각에",
+    "fileChanged": "파일이 변경되면"
+  }
+}

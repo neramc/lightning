@@ -1,0 +1,22 @@
+{
+  "name": "@lightning/bindings",
+  "version": "0.1.0",
+  "private": true,
+  "license": "GPL-3.0-only",
+  "type": "module",
+  "description": "GENERATED TypeScript bindings from crates/ipc-types — run `pnpm bindings`, never edit by hand",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "lint": "eslint src",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "^2.6.0"
+  },
+  "devDependencies": {
+    "@lightning/config": "workspace:*",
+    "typescript": "^5.8.0"
+  }
+}

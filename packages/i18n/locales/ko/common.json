@@ -1,0 +1,55 @@
+{
+  "action": {
+    "unsupportedOnOs": "{{os}}에서 이 기능을 지원하지 않음",
+    "needsPermission": "{{permission}} 권한이 필요함",
+    "needsTool": "{{tool}} 설치가 필요함",
+    "fixIt": "해결하기"
+  },
+  "nav": {
+    "shortcuts": "단축 흐름",
+    "automations": "자동화",
+    "gallery": "갤러리",
+    "settings": "설정"
+  },
+  "run": {
+    "run": "실행",
+    "stop": "중지",
+    "running": "실행 중…",
+    "success": "완료",
+    "failed": "실패",
+    "cancelled": "취소됨"
+  },
+  "permission": {
+    "fs-read": "파일 읽기",
+    "fs-write": "파일 쓰기",
+    "shell": "스크립트 실행",
+    "input": "키보드·마우스 제어",
+    "network": "네트워크 접근",
+    "system-settings": "시스템 설정 변경",
+    "device": "카메라·마이크·위치 사용",
+    "elevated": "관리자 권한"
+  },
+  "permissionSheet": {
+    "title": "\"{{name}}\"이(가) 요청하는 권한:",
+    "allow": "허용",
+    "deny": "허용 안 함",
+    "reviewImport": "가져온 단축 흐름은 저장 전에 검토하세요. 가져온 항목은 절대 자동으로 실행되지 않습니다."
+  },
+  "tray": {
+    "open": "Lightning 열기",
+    "quit": "종료"
+  },
+  "commandPalette": {
+    "placeholder": "단축 흐름과 동작 검색…",
+    "noResults": "결과 없음"
+  },
+  "general": {
+    "cancel": "취소",
+    "save": "저장",
+    "delete": "삭제",
+    "rename": "이름 변경",
+    "duplicate": "복제",
+    "newShortcut": "새 단축 흐름",
+    "newAutomation": "새 자동화"
+  }
+}

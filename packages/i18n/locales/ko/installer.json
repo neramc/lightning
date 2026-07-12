@@ -1,0 +1,44 @@
+{
+  "welcome": {
+    "title": "Lightning 설치",
+    "subtitle": "내 컴퓨터를 위한 단축 흐름과 자동화"
+  },
+  "license": {
+    "title": "라이선스",
+    "accept": "GNU 일반 공중 사용 허가서 v3.0에 동의합니다"
+  },
+  "location": {
+    "title": "설치 위치",
+    "browse": "찾아보기…",
+    "perUser": "나만 사용 (권장)",
+    "perMachine": "모든 사용자용 설치 (관리자)"
+  },
+  "options": {
+    "title": "옵션",
+    "autostart": "로그인 시 Lightning 시작",
+    "addToPath": "lightning CLI를 PATH에 추가",
+    "fileAssociation": ".lightning 파일을 Lightning으로 열기",
+    "protocol": "lightning:// 링크 처리",
+    "startMenu": "시작 메뉴 바로가기 만들기",
+    "desktop": "바탕 화면 바로가기 만들기"
+  },
+  "progress": {
+    "installing": "설치 중…",
+    "done": "Lightning 설치가 끝났습니다",
+    "launch": "Lightning 실행"
+  },
+  "uninstall": {
+    "title": "Lightning 제거",
+    "keepData": "단축 흐름과 설정 유지",
+    "removeData": "단축 흐름과 설정도 삭제",
+    "confirm": "제거",
+    "done": "Lightning이 제거되었습니다"
+  },
+  "buttons": {
+    "next": "다음",
+    "back": "뒤로",
+    "install": "설치",
+    "cancel": "취소",
+    "finish": "완료"
+  }
+}

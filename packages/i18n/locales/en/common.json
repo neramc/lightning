@@ -1,0 +1,55 @@
+{
+  "action": {
+    "unsupportedOnOs": "Not supported on {{os}}",
+    "needsPermission": "Needs the {{permission}} permission",
+    "needsTool": "Needs {{tool}} installed",
+    "fixIt": "Fix it"
+  },
+  "nav": {
+    "shortcuts": "Shortcuts",
+    "automations": "Automations",
+    "gallery": "Gallery",
+    "settings": "Settings"
+  },
+  "run": {
+    "run": "Run",
+    "stop": "Stop",
+    "running": "Running…",
+    "success": "Done",
+    "failed": "Failed",
+    "cancelled": "Cancelled"
+  },
+  "permission": {
+    "fs-read": "Read files",
+    "fs-write": "Write files",
+    "shell": "Run scripts",
+    "input": "Control keyboard & mouse",
+    "network": "Access the network",
+    "system-settings": "Change system settings",
+    "device": "Use camera, microphone or location",
+    "elevated": "Administrator access"
+  },
+  "permissionSheet": {
+    "title": "\"{{name}}\" wants to:",
+    "allow": "Allow",
+    "deny": "Don't allow",
+    "reviewImport": "Review this imported shortcut before saving. Imported shortcuts never run automatically."
+  },
+  "tray": {
+    "open": "Open Lightning",
+    "quit": "Quit"
+  },
+  "commandPalette": {
+    "placeholder": "Search shortcuts and actions…",
+    "noResults": "No results"
+  },
+  "general": {
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "rename": "Rename",
+    "duplicate": "Duplicate",
+    "newShortcut": "New Shortcut",
+    "newAutomation": "New Automation"
+  }
+}
