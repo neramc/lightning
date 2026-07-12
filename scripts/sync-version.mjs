@@ -21,11 +21,7 @@ if (!/^\d+\.\d+\.\d+(-[0-9A-Za-z.-]+)?$/.test(version ?? '')) {
 
 /** @type {Array<[string, RegExp, string]>} */
 const targets = [
-  [
-    join(repoRoot, 'package.json'),
-    /("version":\s*")[^"]+(")/,
-    `$1${version}$2`,
-  ],
+  [join(repoRoot, 'package.json'), /("version":\s*")[^"]+(")/, `$1${version}$2`],
   [
     join(repoRoot, 'Cargo.toml'),
     /(\[workspace\.package\][\s\S]*?version\s*=\s*")[^"]+(")/,

@@ -47,10 +47,7 @@ pub fn list_shortcuts(state: tauri::State<'_, AppState>) -> CmdResult<Vec<ipc::S
 }
 
 #[tauri::command]
-pub fn load_shortcut(
-    state: tauri::State<'_, AppState>,
-    id: String,
-) -> CmdResult<ipc::ShortcutDto> {
+pub fn load_shortcut(state: tauri::State<'_, AppState>, id: String) -> CmdResult<ipc::ShortcutDto> {
     let path = state.shortcuts_dir.join(format!("{id}.lightning"));
     let shortcut = store::load_shortcut(&path).map_err(err_string)?;
     Ok((&shortcut).into())

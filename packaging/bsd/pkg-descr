@@ -1,0 +1,7 @@
+Lightning is a free, open-source app for building drag-and-drop
+shortcuts and event-driven automations on the desktop.
+
+On FreeBSD, systemd-only actions surface an honest "not supported on
+FreeBSD" badge; rc.d and cron equivalents are used where they exist.
+
+WWW: https://github.com/neramc/lightning

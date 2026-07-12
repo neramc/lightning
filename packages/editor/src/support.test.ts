@@ -25,7 +25,13 @@ function def(overrides: Partial<ActionDefDto> = {}): ActionDefDto {
 }
 
 function snapshot(overrides: Partial<CapabilitySnapshotDto> = {}): CapabilitySnapshotDto {
-  return { os: 'linux', environment: 'Wayland', osLabel: 'Linux (Wayland)', capabilities: [], ...overrides };
+  return {
+    os: 'linux',
+    environment: 'Wayland',
+    osLabel: 'Linux (Wayland)',
+    capabilities: [],
+    ...overrides,
+  };
 }
 
 describe('effectiveSupport (§6.6: static ∩ probe)', () => {

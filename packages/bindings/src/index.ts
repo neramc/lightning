@@ -11,389 +11,428 @@ import { listen, type UnlistenFn } from '@tauri-apps/api/event';
 /**
  * One catalog entry — everything the editor renders, as data (§6.5).
  */
-export type ActionDefDto = { 
-/**
- * Action id.
- */
-id: string; 
-/**
- * Category id (gradient token + i18n segment).
- */
-category: string; 
-/**
- * Icon token.
- */
-icon: string; 
-/**
- * Param schema.
- */
-params: ParamDefDto[]; 
-/**
- * Output kind id, `null` when dynamic.
- */
-output: string | null; 
-/**
- * Support matrix.
- */
-supports: PlatformSupportDto; 
-/**
- * Permission class id, if any.
- */
-permission: string | null; 
-/**
- * Required runtime capability id, if any.
- */
-requiresCapability: string | null; 
-/**
- * Param holding reviewable script text, if any.
- */
-scriptParam: string | null }
+export type ActionDefDto = {
+  /**
+   * Action id.
+   */
+  id: string;
+  /**
+   * Category id (gradient token + i18n segment).
+   */
+  category: string;
+  /**
+   * Icon token.
+   */
+  icon: string;
+  /**
+   * Param schema.
+   */
+  params: ParamDefDto[];
+  /**
+   * Output kind id, `null` when dynamic.
+   */
+  output: string | null;
+  /**
+   * Support matrix.
+   */
+  supports: PlatformSupportDto;
+  /**
+   * Permission class id, if any.
+   */
+  permission: string | null;
+  /**
+   * Required runtime capability id, if any.
+   */
+  requiresCapability: string | null;
+  /**
+   * Param holding reviewable script text, if any.
+   */
+  scriptParam: string | null;
+};
 
 /**
  * Mirror of `lightning_core::Branch`.
  */
-export type BranchDto = { 
-/**
- * Branch label (`then` / `otherwise` / `body` / menu option).
- */
-label: string; 
-/**
- * Child steps.
- */
-steps: StepDto[] }
+export type BranchDto = {
+  /**
+   * Branch label (`then` / `otherwise` / `body` / menu option).
+   */
+  label: string;
+  /**
+   * Child steps.
+   */
+  steps: StepDto[];
+};
 
 /**
  * The runtime capability snapshot (payload of `capability://changed`).
  */
-export type CapabilitySnapshotDto = { 
-/**
- * OS id (`windows` · `macos` · `linux` · `freebsd`).
- */
-os: string; 
-/**
- * Environment refinement (e.g. `Wayland`).
- */
-environment: string | null; 
-/**
- * The `{{os}}` label for `action.unsupportedOnOs` (§8.1).
- */
-osLabel: string; 
-/**
- * Probed constraints.
- */
-capabilities: CapabilityStatusDto[] }
+export type CapabilitySnapshotDto = {
+  /**
+   * OS id (`windows` · `macos` · `linux` · `freebsd`).
+   */
+  os: string;
+  /**
+   * Environment refinement (e.g. `Wayland`).
+   */
+  environment: string | null;
+  /**
+   * The `{{os}}` label for `action.unsupportedOnOs` (§8.1).
+   */
+  osLabel: string;
+  /**
+   * Probed constraints.
+   */
+  capabilities: CapabilityStatusDto[];
+};
 
 /**
  * One probed capability.
  */
-export type CapabilityStatusDto = { 
-/**
- * Capability id.
- */
-capability: string; 
-/**
- * `available` · `degraded` · `unavailable`.
- */
-status: string; 
-/**
- * Technical reason for degraded/unavailable.
- */
-reason: string | null; 
-/**
- * "Fix it": tool to install.
- */
-fixTool: string | null; 
-/**
- * "Fix it": install hint.
- */
-fixHint: string | null; 
-/**
- * "Fix it": OS permission to grant.
- */
-fixPermission: string | null }
+export type CapabilityStatusDto = {
+  /**
+   * Capability id.
+   */
+  capability: string;
+  /**
+   * `available` · `degraded` · `unavailable`.
+   */
+  status: string;
+  /**
+   * Technical reason for degraded/unavailable.
+   */
+  reason: string | null;
+  /**
+   * "Fix it": tool to install.
+   */
+  fixTool: string | null;
+  /**
+   * "Fix it": install hint.
+   */
+  fixHint: string | null;
+  /**
+   * "Fix it": OS permission to grant.
+   */
+  fixPermission: string | null;
+};
 
 /**
  * Typed content value crossing the IPC boundary (mirror of
  * `lightning_core::Content`; dates and paths travel as strings).
  */
-export type ContentDto = { type: "nothing" } | { type: "text"; value: string } | { type: "number"; value: number } | { type: "boolean"; value: boolean } | { type: "date"; value: string } | { type: "list"; value: ContentDto[] } | { type: "dictionary"; value: Partial<{ [key in string]: ContentDto }> } | { type: "file"; value: string } | { type: "image"; value: string } | { type: "url"; value: string } | { type: "richText"; value: { html: string; plain: string } } | { type: "error"; value: { message: string } }
+export type ContentDto =
+  | { type: 'nothing' }
+  | { type: 'text'; value: string }
+  | { type: 'number'; value: number }
+  | { type: 'boolean'; value: boolean }
+  | { type: 'date'; value: string }
+  | { type: 'list'; value: ContentDto[] }
+  | { type: 'dictionary'; value: Partial<{ [key in string]: ContentDto }> }
+  | { type: 'file'; value: string }
+  | { type: 'image'; value: string }
+  | { type: 'url'; value: string }
+  | { type: 'richText'; value: { html: string; plain: string } }
+  | { type: 'error'; value: { message: string } };
 
 /**
  * Mirror of `lightning_core::ErrorPolicy`.
  */
-export type ErrorPolicyDto = { policy: "stop" } | { policy: "continue" } | { policy: "retry"; attempts: number; backoff_ms: number }
+export type ErrorPolicyDto =
+  | { policy: 'stop' }
+  | { policy: 'continue' }
+  | { policy: 'retry'; attempts: number; backoff_ms: number };
 
 /**
  * Mirror of `lightning_core::Icon`.
  */
-export type IconDto = { 
-/**
- * Tile glyph.
- */
-glyph: string; 
-/**
- * Gradient token (design-system id, never a hex value).
- */
-gradient: string }
+export type IconDto = {
+  /**
+   * Tile glyph.
+   */
+  glyph: string;
+  /**
+   * Gradient token (design-system id, never a hex value).
+   */
+  gradient: string;
+};
 
-export type JsonValue = null | boolean | number | string | JsonValue[] | Partial<{ [key in string]: JsonValue }>
+export type JsonValue =
+  null | boolean | number | string | JsonValue[] | Partial<{ [key in string]: JsonValue }>;
 
 /**
  * One parameter schema entry.
  */
-export type ParamDefDto = { 
-/**
- * Param key (i18n: `actions.<id>.params.<key>`).
- */
-key: string; 
-/**
- * `text` · `number` · `boolean` · `date` · `file` · `enum`.
- */
-kind: string; 
-/**
- * Options when `kind == "enum"`.
- */
-options: string[] | null; 
-/**
- * Whether required.
- */
-required: boolean }
+export type ParamDefDto = {
+  /**
+   * Param key (i18n: `actions.<id>.params.<key>`).
+   */
+  key: string;
+  /**
+   * `text` · `number` · `boolean` · `date` · `file` · `enum`.
+   */
+  kind: string;
+  /**
+   * Options when `kind == "enum"`.
+   */
+  options: string[] | null;
+  /**
+   * Whether required.
+   */
+  required: boolean;
+};
 
 /**
  * Mirror of `lightning_core::ParamValue`.
  */
-export type ParamValueDto = { kind: "literal"; value: ContentDto } | { kind: "variable"; name: string } | { kind: "magicOutput"; step: string } | { kind: "template"; template: string }
+export type ParamValueDto =
+  | { kind: 'literal'; value: ContentDto }
+  | { kind: 'variable'; name: string }
+  | { kind: 'magicOutput'; step: string }
+  | { kind: 'template'; template: string };
 
 /**
  * Per-OS support matrix.
  */
-export type PlatformSupportDto = { windows: SupportLevelDto; macos: SupportLevelDto; linux: SupportLevelDto; freebsd: SupportLevelDto }
+export type PlatformSupportDto = {
+  windows: SupportLevelDto;
+  macos: SupportLevelDto;
+  linux: SupportLevelDto;
+  freebsd: SupportLevelDto;
+};
 
 /**
  * One user-visible run log line.
  */
-export type RunLogEntryDto = { 
-/**
- * RFC3339 timestamp.
- */
-at: string; 
-/**
- * Step uuid, if step-scoped.
- */
-step: string | null; 
-/**
- * `info` · `warn` · `error`.
- */
-level: string; 
-/**
- * Message.
- */
-message: string }
+export type RunLogEntryDto = {
+  /**
+   * RFC3339 timestamp.
+   */
+  at: string;
+  /**
+   * Step uuid, if step-scoped.
+   */
+  step: string | null;
+  /**
+   * `info` · `warn` · `error`.
+   */
+  level: string;
+  /**
+   * Message.
+   */
+  message: string;
+};
 
 /**
  * One `run://progress` event.
  */
-export type RunProgressDto = { 
-/**
- * Run id.
- */
-runId: string; 
-/**
- * Step uuid.
- */
-step: string; 
-/**
- * Action id (drives the block animation without a lookup).
- */
-actionId: string; 
-/**
- * `started` · `finished` · `failed` · `skipped`.
- */
-phase: string; 
-/**
- * Output preview for `finished`.
- */
-preview: string | null; 
-/**
- * Error message for `failed` / `skipped`.
- */
-message: string | null }
+export type RunProgressDto = {
+  /**
+   * Run id.
+   */
+  runId: string;
+  /**
+   * Step uuid.
+   */
+  step: string;
+  /**
+   * Action id (drives the block animation without a lookup).
+   */
+  actionId: string;
+  /**
+   * `started` · `finished` · `failed` · `skipped`.
+   */
+  phase: string;
+  /**
+   * Output preview for `finished`.
+   */
+  preview: string | null;
+  /**
+   * Error message for `failed` / `skipped`.
+   */
+  message: string | null;
+};
 
 /**
  * One run-history row.
  */
-export type RunRecordDto = { 
-/**
- * Shortcut id.
- */
-shortcutId: string; 
-/**
- * RFC3339 start time.
- */
-startedAt: string; 
-/**
- * Duration in milliseconds.
- */
-durationMs: number; 
-/**
- * `success` · `error` · `cancelled`.
- */
-status: string; 
-/**
- * Error message when failed.
- */
-error: string | null }
+export type RunRecordDto = {
+  /**
+   * Shortcut id.
+   */
+  shortcutId: string;
+  /**
+   * RFC3339 start time.
+   */
+  startedAt: string;
+  /**
+   * Duration in milliseconds.
+   */
+  durationMs: number;
+  /**
+   * `success` · `error` · `cancelled`.
+   */
+  status: string;
+  /**
+   * Error message when failed.
+   */
+  error: string | null;
+};
 
 /**
  * Result of a completed (or failed) run.
  */
-export type RunResultDto = { 
-/**
- * Run id.
- */
-runId: string; 
-/**
- * `success` · `error` · `cancelled`.
- */
-status: string; 
-/**
- * Final output.
- */
-output: ContentDto; 
-/**
- * Error message when failed.
- */
-error: string | null; 
-/**
- * The collected run log.
- */
-log: RunLogEntryDto[] }
+export type RunResultDto = {
+  /**
+   * Run id.
+   */
+  runId: string;
+  /**
+   * `success` · `error` · `cancelled`.
+   */
+  status: string;
+  /**
+   * Final output.
+   */
+  output: ContentDto;
+  /**
+   * Error message when failed.
+   */
+  error: string | null;
+  /**
+   * The collected run log.
+   */
+  log: RunLogEntryDto[];
+};
 
 /**
  * Full shortcut document crossing the boundary (editor load/save).
  */
-export type ShortcutDto = { 
-/**
- * Schema version.
- */
-schemaVersion: number; 
-/**
- * Shortcut id.
- */
-id: string; 
-/**
- * Display name.
- */
-name: string; 
-/**
- * Description.
- */
-description: string; 
-/**
- * Tile icon.
- */
-icon: IconDto; 
-/**
- * Global hotkey.
- */
-hotkey: string | null; 
-/**
- * The flow.
- */
-steps: StepDto[]; 
-/**
- * Automation trigger block.
- */
-trigger: TriggerConfigDto | null }
+export type ShortcutDto = {
+  /**
+   * Schema version.
+   */
+  schemaVersion: number;
+  /**
+   * Shortcut id.
+   */
+  id: string;
+  /**
+   * Display name.
+   */
+  name: string;
+  /**
+   * Description.
+   */
+  description: string;
+  /**
+   * Tile icon.
+   */
+  icon: IconDto;
+  /**
+   * Global hotkey.
+   */
+  hotkey: string | null;
+  /**
+   * The flow.
+   */
+  steps: StepDto[];
+  /**
+   * Automation trigger block.
+   */
+  trigger: TriggerConfigDto | null;
+};
 
 /**
  * Indexed shortcut metadata (grid tiles, palette).
  */
-export type ShortcutMetaDto = { 
-/**
- * Shortcut id.
- */
-id: string; 
-/**
- * Display name.
- */
-name: string; 
-/**
- * Tile glyph.
- */
-iconGlyph: string; 
-/**
- * Gradient token.
- */
-gradient: string; 
-/**
- * Hotkey, if assigned.
- */
-hotkey: string | null; 
-/**
- * Whether it is an automation.
- */
-isAutomation: boolean }
+export type ShortcutMetaDto = {
+  /**
+   * Shortcut id.
+   */
+  id: string;
+  /**
+   * Display name.
+   */
+  name: string;
+  /**
+   * Tile glyph.
+   */
+  iconGlyph: string;
+  /**
+   * Gradient token.
+   */
+  gradient: string;
+  /**
+   * Hotkey, if assigned.
+   */
+  hotkey: string | null;
+  /**
+   * Whether it is an automation.
+   */
+  isAutomation: boolean;
+};
 
 /**
  * Mirror of `lightning_core::Step`.
  */
-export type StepDto = { 
-/**
- * Step uuid (magic-variable identity).
- */
-uuid: string; 
-/**
- * Action id.
- */
-actionId: string; 
-/**
- * Parameter values.
- */
-params: Partial<{ [key in string]: ParamValueDto }>; 
-/**
- * Error policy.
- */
-errorPolicy: ErrorPolicyDto; 
-/**
- * Control-flow children.
- */
-branches: BranchDto[] }
+export type StepDto = {
+  /**
+   * Step uuid (magic-variable identity).
+   */
+  uuid: string;
+  /**
+   * Action id.
+   */
+  actionId: string;
+  /**
+   * Parameter values.
+   */
+  params: Partial<{ [key in string]: ParamValueDto }>;
+  /**
+   * Error policy.
+   */
+  errorPolicy: ErrorPolicyDto;
+  /**
+   * Control-flow children.
+   */
+  branches: BranchDto[];
+};
 
 /**
  * One support level.
  */
-export type SupportLevelDto = { 
-/**
- * `full` · `partial` · `none`.
- */
-level: string; 
-/**
- * Note for `partial`.
- */
-note: string | null }
+export type SupportLevelDto = {
+  /**
+   * `full` · `partial` · `none`.
+   */
+  level: string;
+  /**
+   * Note for `partial`.
+   */
+  note: string | null;
+};
 
 /**
  * Mirror of `lightning_core::TriggerConfig`.
  */
-export type TriggerConfigDto = { 
-/**
- * Trigger id.
- */
-triggerId: string; 
-/**
- * Trigger-specific config JSON.
- */
-config: JsonValue; 
-/**
- * Whether the automation is armed.
- */
-enabled: boolean; 
-/**
- * Cooldown override in milliseconds.
- */
-cooldownMs: number | null }
-
+export type TriggerConfigDto = {
+  /**
+   * Trigger id.
+   */
+  triggerId: string;
+  /**
+   * Trigger-specific config JSON.
+   */
+  config: JsonValue;
+  /**
+   * Whether the automation is armed.
+   */
+  enabled: boolean;
+  /**
+   * Cooldown override in milliseconds.
+   */
+  cooldownMs: number | null;
+};
 
 export async function listActions(): Promise<ActionDefDto[]> {
   return await invoke<ActionDefDto[]>('list_actions');
@@ -438,18 +477,14 @@ export const EVENTS = {
   storeChanged: 'store://changed',
 } as const;
 
-export function onRunProgress(
-  handler: (payload: RunProgressDto) => void,
-): Promise<UnlistenFn> {
+export function onRunProgress(handler: (payload: RunProgressDto) => void): Promise<UnlistenFn> {
   return listen<RunProgressDto>(EVENTS.runProgress, (event) => handler(event.payload));
 }
 
 export function onCapabilityChanged(
   handler: (payload: CapabilitySnapshotDto) => void,
 ): Promise<UnlistenFn> {
-  return listen<CapabilitySnapshotDto>(EVENTS.capabilityChanged, (event) =>
-    handler(event.payload),
-  );
+  return listen<CapabilitySnapshotDto>(EVENTS.capabilityChanged, (event) => handler(event.payload));
 }
 
 export function onStoreChanged(handler: (shortcutId: string) => void): Promise<UnlistenFn> {

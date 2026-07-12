@@ -31,14 +31,14 @@ app, but built for the desktop, where far more powerful OS-level actions are pos
 
 ## Platforms
 
-| Platform | Package |
-|---|---|
+| Platform                                | Package                                    |
+| --------------------------------------- | ------------------------------------------ |
 | Windows 10 1809+ / 11 (x64, ARM64, x86) | Dedicated installer (.exe) · portable .zip |
-| macOS 11+ (Apple Silicon & Intel) | .dmg (signed + notarized) |
-| Ubuntu 22.04+ / Debian 12+ | .deb |
-| Arch Linux | AUR (`lightning`, `lightning-bin`) |
-| Any glibc Linux | AppImage |
-| Gentoo · FreeBSD 14+ | ebuild · port (community, best-effort) |
+| macOS 11+ (Apple Silicon & Intel)       | .dmg (signed + notarized)                  |
+| Ubuntu 22.04+ / Debian 12+              | .deb                                       |
+| Arch Linux                              | AUR (`lightning`, `lightning-bin`)         |
+| Any glibc Linux                         | AppImage                                   |
+| Gentoo · FreeBSD 14+                    | ebuild · port (community, best-effort)     |
 
 ## Repository layout
 
@@ -81,7 +81,7 @@ live in [`CLAUDE.md`](CLAUDE.md) and [`docs/`](docs/).
 Contributions are welcome under GPL-3.0 (inbound = outbound, DCO sign-off, no CLA).
 See [`CONTRIBUTING.md`](CONTRIBUTING.md).
 
-Lightning is an original work *inspired by* Apple's Shortcuts. It contains no Apple
+Lightning is an original work _inspired by_ Apple's Shortcuts. It contains no Apple
 assets, icons, or strings, and is not affiliated with or endorsed by Apple.
 
 ## License

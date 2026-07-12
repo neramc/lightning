@@ -46,7 +46,9 @@ for (const target of TIER1_TARGETS) {
 }
 
 if (failed) {
-  console.error('\n\x1b[31m✗ check:targets failed — never break one Tier-1 platform to fix another.\x1b[0m');
+  console.error(
+    '\n\x1b[31m✗ check:targets failed — never break one Tier-1 platform to fix another.\x1b[0m',
+  );
   process.exit(1);
 }
 console.log('\n\x1b[32m✓ all Tier-1 targets compile\x1b[0m');

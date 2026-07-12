@@ -1,0 +1,15 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Copyright (C) 2026 neramc
+[Desktop Entry]
+Type=Application
+Name=Lightning
+GenericName=Shortcuts & Automations
+GenericName[ko]=단축 흐름과 자동화
+Comment=Build shortcuts and automations for your desktop
+Comment[ko]=데스크톱을 위한 단축 흐름과 자동화를 만드세요
+Exec=lightning %u
+Icon=lightning
+Terminal=false
+Categories=Utility;Productivity;
+MimeType=application/x-lightning;x-scheme-handler/lightning;
+StartupWMClass=Lightning

@@ -35,12 +35,18 @@ const res = spawnSync(
 );
 if (res.status !== 0) process.exit(res.status ?? 1);
 
-// Keep generated output stable under prettier so fmt:check never fights the generator.
-spawnSync('pnpm', ['exec', 'prettier', '--write', outFile], {
-  stdio: 'inherit',
-  cwd: repoRoot,
-  shell: process.platform === 'win32',
-});
+// Keep generated output stable under prettier so fmt:check never fights the
+// generator. The explicit --config matters: in --check mode the temp file
+// lives outside the repo, where prettier would otherwise use its defaults.
+spawnSync(
+  'pnpm',
+  ['exec', 'prettier', '--config', join(repoRoot, '.prettierrc.json'), '--write', outFile],
+  {
+    stdio: 'inherit',
+    cwd: repoRoot,
+    shell: process.platform === 'win32',
+  },
+);
 
 if (check) {
   const fresh = readFileSync(outFile, 'utf8');

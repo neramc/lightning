@@ -17,7 +17,11 @@ if (!dist) {
 }
 
 const version = process.env.GITHUB_REF_NAME?.replace(/^v/, '') ?? '0.0.0';
-const channel = version.includes('-beta') ? 'beta' : version.includes('-nightly') ? 'nightly' : 'stable';
+const channel = version.includes('-beta')
+  ? 'beta'
+  : version.includes('-nightly')
+    ? 'nightly'
+    : 'stable';
 
 const TARGET_PATTERNS = [
   { target: 'windows-x86_64', pattern: /x86_64-pc-windows/ },

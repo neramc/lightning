@@ -1,0 +1,23 @@
+Source: lightning
+Section: utils
+Priority: optional
+Maintainer: neramc <maintainer@example.invalid>
+Build-Depends: debhelper-compat (= 13), libwebkit2gtk-4.1-dev, libssl-dev,
+ libayatana-appindicator3-dev, librsvg2-dev, cargo, nodejs (>= 22), pnpm
+Standards-Version: 4.7.0
+Homepage: https://github.com/neramc/lightning
+
+Package: lightning
+Architecture: amd64 arm64
+Depends: ${shlibs:Depends}, ${misc:Depends}, libwebkit2gtk-4.1-0,
+ libayatana-appindicator3-1
+Recommends: network-manager, xdg-desktop-portal
+Suggests: ydotool, playerctl, speech-dispatcher
+Description: Shortcuts and automations for your desktop
+ Lightning is a free, open-source, cross-platform app for building
+ drag-and-drop shortcuts and event-driven automations: schedules, file
+ watches, Wi-Fi events, USB devices, clipboard changes and more.
+ .
+ Optional tools unlock more actions at runtime (honest capability
+ probing): ydotool for input injection on Wayland, playerctl for media
+ control, speech-dispatcher for text-to-speech.

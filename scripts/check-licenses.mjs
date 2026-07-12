@@ -46,7 +46,8 @@ const report = JSON.parse(res.stdout || '{}');
 const violations = [];
 for (const [license, packages] of Object.entries(report)) {
   if (license === 'Unknown' || !allowed(license)) {
-    for (const pkg of packages) violations.push(`${pkg.name}@${pkg.versions?.join(',')} — ${license}`);
+    for (const pkg of packages)
+      violations.push(`${pkg.name}@${pkg.versions?.join(',')} — ${license}`);
   }
 }
 

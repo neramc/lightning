@@ -11,7 +11,12 @@ import type { ActionDefDto, CapabilitySnapshotDto } from '@lightning/bindings';
 export type EffectiveSupport =
   | { kind: 'supported' }
   | { kind: 'partial'; note: string | null }
-  | { kind: 'unsupported'; reason: string | null; fixTool: string | null; fixPermission: string | null };
+  | {
+      kind: 'unsupported';
+      reason: string | null;
+      fixTool: string | null;
+      fixPermission: string | null;
+    };
 
 /** Compute how an action behaves on the probed system. */
 export function effectiveSupport(

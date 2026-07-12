@@ -13,7 +13,11 @@ const EN_COMMON: &str = include_str!("../../../../packages/i18n/locales/en/commo
 const KO_COMMON: &str = include_str!("../../../../packages/i18n/locales/ko/common.json");
 
 fn tray_label(locale: &str, key: &str) -> String {
-    let source = if locale.starts_with("ko") { KO_COMMON } else { EN_COMMON };
+    let source = if locale.starts_with("ko") {
+        KO_COMMON
+    } else {
+        EN_COMMON
+    };
     serde_json::from_str::<serde_json::Value>(source)
         .ok()
         .and_then(|v| v["tray"][key].as_str().map(str::to_owned))
@@ -33,7 +37,11 @@ pub fn setup(app: &tauri::App) -> tauri::Result<()> {
     let menu = Menu::with_items(app, &[&open, &quit])?;
 
     TrayIconBuilder::with_id("main")
-        .icon(app.default_window_icon().cloned().ok_or(tauri::Error::WindowNotFound)?)
+        .icon(
+            app.default_window_icon()
+                .cloned()
+                .ok_or(tauri::Error::WindowNotFound)?,
+        )
         .menu(&menu)
         .on_menu_event(|app, event| match event.id.as_ref() {
             "quit" => app.exit(0),

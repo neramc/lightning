@@ -63,7 +63,9 @@ export const categoryGradients: Record<CategoryId, Gradient> = {
 /** CSS background-image string for a category tile/block. */
 export function gradientCss(category: string): string {
   const gradient =
-    categoryGradients[(category as CategoryId) in categoryGradients ? (category as CategoryId) : 'system'];
+    categoryGradients[
+      (category as CategoryId) in categoryGradients ? (category as CategoryId) : 'system'
+    ];
   return `linear-gradient(135deg, ${gradient.from}, ${gradient.to})`;
 }
 

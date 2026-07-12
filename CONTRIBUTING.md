@@ -22,8 +22,8 @@ Thanks for helping! This is a condensed guide — the full operating manual is
 - Trunk-based development. Branch from `main`: `feat/<scope>-<desc>`, `fix/…`, `chore/…`.
 - **Conventional Commits** with enforced scopes:
   `core, actions, triggers, platform-win, platform-mac, platform-linux, platform-bsd,
-  engine, store, scripting, ipc, ui, editor, i18n, installer, updater, packaging, ci,
-  docs, deps`.
+engine, store, scripting, ipc, ui, editor, i18n, installer, updater, packaging, ci,
+docs, deps`.
 - Keep PRs small and focused. Include the platform-impact checklist (tested on /
   capability changes / schema changes / i18n done), link an issue, and attach a screen
   recording for UI changes.

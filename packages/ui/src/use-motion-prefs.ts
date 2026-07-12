@@ -45,8 +45,7 @@ export function useMotionPrefs(): MotionPrefs {
 
   return {
     reducedMotion,
-    spring: (name) =>
-      reducedMotion ? { duration: reducedMotionFadeMs / 1000 } : spring[name],
+    spring: (name) => (reducedMotion ? { duration: reducedMotionFadeMs / 1000 } : spring[name]),
     duration: (name) =>
       (reducedMotion ? Math.min(duration[name], reducedMotionFadeMs) : duration[name]) / 1000,
   };

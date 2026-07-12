@@ -30,9 +30,7 @@ describe('locale completeness', () => {
   }
 
   it('the canonical unsupported string is byte-exact (§8.1)', () => {
-    expect(resources.ko.common.action.unsupportedOnOs).toBe(
-      '{{os}}에서 이 기능을 지원하지 않음',
-    );
+    expect(resources.ko.common.action.unsupportedOnOs).toBe('{{os}}에서 이 기능을 지원하지 않음');
     expect(resources.en.common.action.unsupportedOnOs).toBe('Not supported on {{os}}');
   });
 
@@ -40,16 +38,15 @@ describe('locale completeness', () => {
     // Heuristic: ko action names must contain at least one Hangul syllable
     // or be an accepted technical term (UUID, Base64, JavaScript…).
     const allowlist = new Set(['Base64', 'UUID 생성', 'JavaScript 실행']);
-    const names = Object.values(resources.ko.actions)
-      .flatMap((group) =>
-        typeof group === 'object'
-          ? Object.values(group).map((entry) =>
-              typeof entry === 'object' && entry !== null && 'name' in entry
-                ? String((entry as { name: string }).name)
-                : String(entry),
-            )
-          : [],
-      );
+    const names = Object.values(resources.ko.actions).flatMap((group) =>
+      typeof group === 'object'
+        ? Object.values(group).map((entry) =>
+            typeof entry === 'object' && entry !== null && 'name' in entry
+              ? String((entry as { name: string }).name)
+              : String(entry),
+          )
+        : [],
+    );
     for (const name of names) {
       if (allowlist.has(name)) continue;
       expect(name, `suspiciously untranslated: ${name}`).toMatch(/\p{Script=Hangul}|·/u);

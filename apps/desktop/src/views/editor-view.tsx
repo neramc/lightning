@@ -72,7 +72,9 @@ export function EditorView() {
             {editor.lastResult.log.map((entry, index) => (
               <li
                 key={index}
-                className={entry.level === 'error' ? 'text-rose-500' : 'text-zinc-600 dark:text-zinc-300'}
+                className={
+                  entry.level === 'error' ? 'text-rose-500' : 'text-zinc-600 dark:text-zinc-300'
+                }
               >
                 {entry.message}
               </li>

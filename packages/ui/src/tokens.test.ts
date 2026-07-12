@@ -16,9 +16,7 @@ describe('design tokens', () => {
   });
 
   it('unknown categories fall back to the system gradient', () => {
-    expect(gradientCss('definitely-not-a-category')).toContain(
-      categoryGradients.system.from,
-    );
+    expect(gradientCss('definitely-not-a-category')).toContain(categoryGradients.system.from);
   });
 
   it('motion tokens match the spec (§9.2)', () => {

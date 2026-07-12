@@ -50,7 +50,9 @@ function SortableBlock(props: {
       {...listeners}
       style={{
         transform: CSS.Transform.toString(
-          transform ? { ...transform, scaleX: isDragging ? 1.03 : 1, scaleY: isDragging ? 1.03 : 1 } : null,
+          transform
+            ? { ...transform, scaleX: isDragging ? 1.03 : 1, scaleY: isDragging ? 1.03 : 1 }
+            : null,
         ),
         transition,
         boxShadow: isDragging ? elevation.lifted : undefined,

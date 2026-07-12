@@ -1,0 +1,39 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Copyright (C) 2026 neramc
+# Maintainer: neramc
+# The `lightning-bin` AUR package repackages the released .deb instead.
+
+pkgname=lightning
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="Shortcuts and automations for your desktop"
+arch=('x86_64' 'aarch64')
+url="https://github.com/neramc/lightning"
+license=('GPL-3.0-only')
+depends=('webkit2gtk-4.1' 'libayatana-appindicator' 'openssl')
+optdepends=(
+  'networkmanager: Wi-Fi actions and triggers'
+  'ydotool: input injection on Wayland'
+  'playerctl: media control actions'
+  'speech-dispatcher: text-to-speech'
+)
+makedepends=('cargo' 'nodejs>=22' 'pnpm' 'rust')
+source=("$pkgname-$pkgver.tar.gz::$url/archive/refs/tags/v$pkgver.tar.gz")
+sha256sums=('SKIP') # pinned by the release bump PR (scripts in packaging/)
+
+build() {
+  cd "$pkgname-$pkgver"
+  pnpm install --frozen-lockfile
+  pnpm build
+}
+
+package() {
+  cd "$pkgname-$pkgver"
+  install -Dm755 "apps/desktop/src-tauri/target/release/lightning-desktop" \
+    "$pkgdir/usr/bin/lightning"
+  install -Dm644 "packaging/linux/lightning.desktop" \
+    "$pkgdir/usr/share/applications/lightning.desktop"
+  install -Dm644 "resources/icon.png" \
+    "$pkgdir/usr/share/icons/hicolor/512x512/apps/lightning.png"
+  install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}
