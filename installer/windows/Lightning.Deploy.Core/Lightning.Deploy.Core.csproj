@@ -1,0 +1,15 @@
+<!--
+  SPDX-License-Identifier: GPL-3.0-only
+  Copyright (C) 2026 neramc
+-->
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <RootNamespace>Lightning.Deploy.Core</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Win32.Registry" Version="6.0.0" />
+    <!-- Ed25519 + Blake2b for minisign verification (MIT — GPL-compatible). -->
+    <PackageReference Include="NSec.Cryptography" Version="25.4.0" />
+  </ItemGroup>
+</Project>

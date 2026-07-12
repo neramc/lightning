@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SPDX-License-Identifier: GPL-3.0-only
+  Copyright (C) 2026 neramc
+  Keys mirror packages/i18n/locales/en/installer.json (§15).
+-->
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter</value></resheader>
+  <data name="WelcomeTitle.Text" xml:space="preserve"><value>Install Lightning</value></data>
+  <data name="WelcomeSubtitle.Text" xml:space="preserve"><value>Shortcuts and automations for your real computer</value></data>
+  <data name="OptionAutostart.Content" xml:space="preserve"><value>Start Lightning at login</value></data>
+  <data name="OptionAddToPath.Content" xml:space="preserve"><value>Add the lightning CLI to PATH</value></data>
+  <data name="OptionFileAssociation.Content" xml:space="preserve"><value>Open .lightning files with Lightning</value></data>
+  <data name="OptionProtocol.Content" xml:space="preserve"><value>Handle lightning:// links</value></data>
+  <data name="OptionStartMenu.Content" xml:space="preserve"><value>Create a Start menu shortcut</value></data>
+  <data name="OptionDesktop.Content" xml:space="preserve"><value>Create a desktop shortcut</value></data>
+  <data name="InstallButton.Content" xml:space="preserve"><value>Install</value></data>
+  <data name="CancelButton.Content" xml:space="preserve"><value>Cancel</value></data>
+</root>

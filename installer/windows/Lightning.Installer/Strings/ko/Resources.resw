@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SPDX-License-Identifier: GPL-3.0-only
+  Copyright (C) 2026 neramc
+  packages/i18n/locales/ko/installer.json과 키를 공유합니다 (§15).
+-->
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter</value></resheader>
+  <data name="WelcomeTitle.Text" xml:space="preserve"><value>Lightning 설치</value></data>
+  <data name="WelcomeSubtitle.Text" xml:space="preserve"><value>내 컴퓨터를 위한 단축 흐름과 자동화</value></data>
+  <data name="OptionAutostart.Content" xml:space="preserve"><value>로그인 시 Lightning 시작</value></data>
+  <data name="OptionAddToPath.Content" xml:space="preserve"><value>lightning CLI를 PATH에 추가</value></data>
+  <data name="OptionFileAssociation.Content" xml:space="preserve"><value>.lightning 파일을 Lightning으로 열기</value></data>
+  <data name="OptionProtocol.Content" xml:space="preserve"><value>lightning:// 링크 처리</value></data>
+  <data name="OptionStartMenu.Content" xml:space="preserve"><value>시작 메뉴 바로가기 만들기</value></data>
+  <data name="OptionDesktop.Content" xml:space="preserve"><value>바탕 화면 바로가기 만들기</value></data>
+  <data name="InstallButton.Content" xml:space="preserve"><value>설치</value></data>
+  <data name="CancelButton.Content" xml:space="preserve"><value>취소</value></data>
+</root>

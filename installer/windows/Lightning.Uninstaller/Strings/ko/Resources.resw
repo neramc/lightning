@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SPDX-License-Identifier: GPL-3.0-only
+  Copyright (C) 2026 neramc
+-->
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter</value></resheader>
+  <data name="UninstallTitle.Text" xml:space="preserve"><value>Lightning 제거</value></data>
+  <data name="KeepDataOption.Content" xml:space="preserve"><value>단축 흐름과 설정 유지</value></data>
+  <data name="UninstallButton.Content" xml:space="preserve"><value>제거</value></data>
+  <data name="CancelButton.Content" xml:space="preserve"><value>취소</value></data>
+</root>

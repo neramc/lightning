@@ -1,0 +1,21 @@
+<!--
+  SPDX-License-Identifier: GPL-3.0-only
+  Copyright (C) 2026 neramc
+
+  Shared build settings for the Windows installer suite (CLAUDE.md §4):
+  .NET 10 LTS, C# 14, nullable enabled, warnings-as-errors.
+  <Version> is kept in sync by `pnpm version:sync`.
+-->
+<Project>
+  <PropertyGroup>
+    <Version>0.1.0</Version>
+    <LangVersion>14.0</LangVersion>
+    <Nullable>enable</Nullable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Company>neramc</Company>
+    <Product>Lightning</Product>
+    <Copyright>Copyright (C) 2026 neramc</Copyright>
+    <PackageLicenseExpression>GPL-3.0-only</PackageLicenseExpression>
+  </PropertyGroup>
+</Project>

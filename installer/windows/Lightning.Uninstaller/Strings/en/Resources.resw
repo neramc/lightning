@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SPDX-License-Identifier: GPL-3.0-only
+  Copyright (C) 2026 neramc
+-->
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter</value></resheader>
+  <data name="UninstallTitle.Text" xml:space="preserve"><value>Uninstall Lightning</value></data>
+  <data name="KeepDataOption.Content" xml:space="preserve"><value>Keep my shortcuts and settings</value></data>
+  <data name="UninstallButton.Content" xml:space="preserve"><value>Uninstall</value></data>
+  <data name="CancelButton.Content" xml:space="preserve"><value>Cancel</value></data>
+</root>
