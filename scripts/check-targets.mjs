@@ -14,6 +14,9 @@ const TIER1_TARGETS = [
   'x86_64-unknown-linux-gnu',
 ];
 
+// Pure-Rust crates only: crates that compile C (lightning-store via bundled
+// SQLite, lightning-scripting via QuickJS, the Tauri shell) need a cross C
+// toolchain and are covered by the per-OS CI build matrix instead.
 const CRATES = [
   'lightning-core',
   'lightning-actions',
@@ -23,7 +26,6 @@ const CRATES = [
   'lightning-platform-macos',
   'lightning-platform-linux',
   'lightning-platform-bsd',
-  'lightning-store',
   'lightning-ipc-types',
 ];
 
