@@ -28,17 +28,26 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - { name: 'Windows x64', os: windows-2022, target: x86_64-pc-windows-msvc }
-          - { name: 'Windows ARM64', os: windows-2022, target: aarch64-pc-windows-msvc }
-          - { name: 'macOS Apple Silicon', os: macos-14, target: aarch64-apple-darwin }
-          - { name: 'macOS Intel', os: macos-14, target: x86_64-apple-darwin }
+          - { name: 'Windows x64', os: windows-2022, target: x86_64-pc-windows-msvc, tier: 1 }
+          - { name: 'Windows ARM64', os: windows-2022, target: aarch64-pc-windows-msvc, tier: 2 }
+          - { name: 'macOS Apple Silicon', os: macos-14, target: aarch64-apple-darwin, tier: 1 }
+          - { name: 'macOS Intel', os: macos-14, target: x86_64-apple-darwin, tier: 1 }
           - {
               name: 'Linux x64 (.deb + AppImage)',
               os: ubuntu-24.04,
               target: x86_64-unknown-linux-gnu,
+              tier: 1,
             }
-          - { name: 'Linux ARM64', os: ubuntu-24.04-arm, target: aarch64-unknown-linux-gnu }
+          - {
+              name: 'Linux ARM64',
+              os: ubuntu-24.04-arm,
+              target: aarch64-unknown-linux-gnu,
+              tier: 2,
+            }
     runs-on: ${{ matrix.os }}
+    # Tier 1 breakage blocks the release; Tier 2 failures open issues but
+    # must not sink the publish job (CLAUDE.md §7).
+    continue-on-error: ${{ matrix.tier == 2 }}
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
@@ -57,7 +66,11 @@ jobs:
             libssl-dev libayatana-appindicator3-dev librsvg2-dev
       - run: pnpm install --frozen-lockfile
       - name: Build app bundle
-        run: pnpm build
+        # Explicit --target so every matrix leg produces the arch its
+        # artifact name claims (macos-14 and windows-2022 hosts otherwise
+        # silently build their host arch). Bundles land in
+        # target/<triple>/release/bundle.
+        run: pnpm --filter @lightning/desktop exec tauri build --target ${{ matrix.target }}
       # Signing: all keys live exclusively in GitHub Actions secrets (CLAUDE.md §2).
       - name: Sign (Windows Authenticode)
         if: runner.os == 'Windows'
@@ -67,10 +80,26 @@ jobs:
         run: echo "::notice::codesign/notarytool step — uses secrets.APPLE_*"
         env:
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+      - name: Portable zip (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $ver = "$env:GITHUB_REF_NAME".TrimStart('v')
+          Compress-Archive -Path "target/${{ matrix.target }}/release/lightning-desktop.exe" `
+            -DestinationPath "target/${{ matrix.target }}/release/bundle/Lightning_${ver}_${{ matrix.target }}-portable.zip"
+      # Only distributable files — uploading bundle/** whole would drag the
+      # unpacked .app/appimage trees into the release as loose files.
       - uses: actions/upload-artifact@v4
         with:
           name: release-${{ matrix.target }}
-          path: target/release/bundle/**
+          path: |
+            target/${{ matrix.target }}/release/bundle/**/*.dmg
+            target/${{ matrix.target }}/release/bundle/**/*.deb
+            target/${{ matrix.target }}/release/bundle/**/*.rpm
+            target/${{ matrix.target }}/release/bundle/**/*.AppImage
+            target/${{ matrix.target }}/release/bundle/**/*.exe
+            target/${{ matrix.target }}/release/bundle/**/*.msi
+            target/${{ matrix.target }}/release/bundle/*.zip
           if-no-files-found: warn
 
   installer:
@@ -96,6 +125,10 @@ jobs:
   publish:
     name: Draft release · manual approval · publish
     needs: [build, installer]
+    # Draft the release whenever the Tier-1 bundles built — a broken
+    # installer job must not leave a tagged release with no artifacts at
+    # all. The draft stays unpublished until a human approves it.
+    if: always() && needs.build.result == 'success'
     runs-on: ubuntu-24.04
     environment: release # manual approval gate
     permissions:
