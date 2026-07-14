@@ -29,11 +29,11 @@ build() {
 
 package() {
   cd "$pkgname-$pkgver"
-  install -Dm755 "apps/desktop/src-tauri/target/release/lightning-desktop" \
+  install -Dm755 "target/release/lightning-desktop" \
     "$pkgdir/usr/bin/lightning"
   install -Dm644 "packaging/linux/lightning.desktop" \
     "$pkgdir/usr/share/applications/lightning.desktop"
   install -Dm644 "resources/icon.png" \
     "$pkgdir/usr/share/icons/hicolor/512x512/apps/lightning.png"
-  install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+  install -Dm644 LICENSE.md "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
 }

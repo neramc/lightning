@@ -11,9 +11,10 @@ target/
 # Tauri
 apps/desktop/src-tauri/gen/
 
-# .NET
-bin/
-obj/
+# .NET (scoped to the installer — a bare `bin/` would swallow Rust
+# `src/bin/` directories)
+installer/**/bin/
+installer/**/obj/
 *.user
 *.binlog
 

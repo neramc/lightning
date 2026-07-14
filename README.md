@@ -6,7 +6,7 @@ Lightning is a free, open-source, cross-platform desktop app for building drag-a
 shortcuts and event-driven automations — inspired by the ergonomics of Apple's Shortcuts
 app, but built for the desktop, where far more powerful OS-level actions are possible.
 
-[![License: GPL-3.0](https://img.shields.io/badge/License-GPL%203.0-blue.svg)](LICENSE)
+[![License: GPL-3.0](https://img.shields.io/badge/License-GPL%203.0-blue.svg)](LICENSE.md)
 [![CI](https://github.com/neramc/lightning/actions/workflows/ci.yml/badge.svg)](https://github.com/neramc/lightning/actions/workflows/ci.yml)
 
 ---
@@ -86,4 +86,4 @@ assets, icons, or strings, and is not affiliated with or endorsed by Apple.
 
 ## License
 
-Copyright (C) 2026 neramc — [GNU General Public License v3.0](LICENSE) (`GPL-3.0-only`).
+Copyright (C) 2026 neramc — [GNU General Public License v3.0](LICENSE.md) (`GPL-3.0-only`).

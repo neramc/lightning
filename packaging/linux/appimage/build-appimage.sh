@@ -7,7 +7,7 @@
 set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
-BUNDLE_DIR="$REPO_ROOT/apps/desktop/src-tauri/target/release/bundle/appimage"
+BUNDLE_DIR="$REPO_ROOT/target/release/bundle/appimage"
 VERSION="$(node -p "require('$REPO_ROOT/package.json').version")"
 ARCH="${ARCH:-x86_64}"
 

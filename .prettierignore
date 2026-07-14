@@ -7,5 +7,6 @@ installer/
 packaging/
 resources/
 LICENSE
+LICENSE.md
 Cargo.lock
 apps/desktop/src-tauri/gen/

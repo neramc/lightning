@@ -12,7 +12,7 @@ COMMENT=	Shortcuts and automations for your desktop
 WWW=		https://github.com/neramc/lightning
 
 LICENSE=	GPLv3
-LICENSE_FILE=	${WRKSRC}/LICENSE
+LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
 BUILD_DEPENDS=	rust>=1.85:lang/rust \
 		node22>=22:www/node22 \
@@ -27,7 +27,7 @@ do-build:
 
 do-install:
 	${INSTALL_PROGRAM} \
-		${WRKSRC}/apps/desktop/src-tauri/target/release/lightning-desktop \
+		${WRKSRC}/target/release/lightning-desktop \
 		${STAGEDIR}${PREFIX}/bin/lightning
 	${INSTALL_DATA} ${WRKSRC}/packaging/linux/lightning.desktop \
 		${STAGEDIR}${PREFIX}/share/applications/lightning.desktop

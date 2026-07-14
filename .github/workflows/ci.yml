@@ -138,7 +138,17 @@ jobs:
             webkit2gtk-driver xvfb
       - run: pnpm install --frozen-lockfile
       - run: cargo install tauri-driver --locked
-      - name: Run E2E
+      - name: Build the app under test
+        # tauri/custom-protocol embeds the production dist — without it a
+        # plain cargo build serves the devUrl and the webview shows nothing.
+        run: |
+          pnpm --filter @lightning/desktop build:web
+          cargo build --release -p lightning-desktop --features tauri/custom-protocol
+      - name: Run E2E (Linux, under Xvfb)
+        if: runner.os == 'Linux'
+        run: xvfb-run --auto-servernum pnpm e2e
+      - name: Run E2E (Windows)
+        if: runner.os == 'Windows'
+        # wdio.conf.ts hands the runner's preinstalled msedgedriver
+        # ($env:EDGEWEBDRIVER) to tauri-driver as --native-driver.
         run: pnpm e2e
-        env:
-          DISPLAY: ':99'

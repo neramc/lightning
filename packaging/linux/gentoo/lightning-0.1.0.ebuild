@@ -29,8 +29,8 @@ src_compile() {
 }
 
 src_install() {
-	dobin apps/desktop/src-tauri/target/release/lightning-desktop
-	newbin apps/desktop/src-tauri/target/release/lightning-desktop lightning
+	dobin target/release/lightning-desktop
+	newbin target/release/lightning-desktop lightning
 	domenu packaging/linux/lightning.desktop
 	doicon -s 512 resources/icon.png
 }
