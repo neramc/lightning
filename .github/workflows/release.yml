@@ -5,6 +5,9 @@ name: Release
 on:
   push:
     tags: ['v*']
+    # A release/vX.Y.Z cut branch (CLAUDE.md §12) kicks the same pipeline
+    # for environments that cannot push tags.
+    branches: ['release/v*']
   workflow_dispatch:
     inputs:
       version:
@@ -13,8 +16,8 @@ on:
 
 env:
   CARGO_TERM_COLOR: always
-  # v-prefixed on tag pushes, bare x.y.z from workflow_dispatch — every
-  # consumer strips the optional leading v.
+  # 'v0.1.0' (tag) · 'release/v0.1.0' (cut branch) · '0.1.0' (dispatch
+  # input) — every consumer strips the optional release/ and v prefixes.
   RELEASE_REF: ${{ github.event_name == 'workflow_dispatch' && inputs.version || github.ref_name }}
 
 jobs:
@@ -27,7 +30,9 @@ jobs:
         with:
           node-version: 22
       - name: Verify one version everywhere matches the tag
-        run: node scripts/sync-version.mjs --check "${RELEASE_REF#v}"
+        run: |
+          REF="${RELEASE_REF#release/}"
+          node scripts/sync-version.mjs --check "${REF#v}"
 
   build:
     name: Build ${{ matrix.name }}
@@ -92,7 +97,7 @@ jobs:
         if: runner.os == 'Windows'
         shell: pwsh
         run: |
-          $ver = "$env:RELEASE_REF".TrimStart('v')
+          $ver = "$env:RELEASE_REF" -replace '^release/', '' -replace '^v', ''
           Compress-Archive -Path "target/${{ matrix.target }}/release/lightning-desktop.exe" `
             -DestinationPath "target/${{ matrix.target }}/release/bundle/Lightning_${ver}_${{ matrix.target }}-portable.zip"
       # Only distributable files — uploading bundle/** whole would drag the
@@ -154,7 +159,9 @@ jobs:
         run: echo "::notice::minisign step — uses secrets.MINISIGN_SECRET_KEY"
       - name: Compute tag name
         id: tag
-        run: echo "name=v${RELEASE_REF#v}" >> "$GITHUB_OUTPUT"
+        run: |
+          REF="${RELEASE_REF#release/}"
+          echo "name=v${REF#v}" >> "$GITHUB_OUTPUT"
       - name: Draft GitHub release with Conventional Commits changelog
         uses: softprops/action-gh-release@v2
         with:

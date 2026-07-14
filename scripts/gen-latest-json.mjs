@@ -16,12 +16,11 @@ if (!dist) {
   process.exit(2);
 }
 
-// RELEASE_VERSION covers workflow_dispatch runs, where GITHUB_REF_NAME is
-// the branch name rather than the release tag.
-const version = (process.env.RELEASE_VERSION ?? process.env.GITHUB_REF_NAME ?? '0.0.0').replace(
-  /^v/,
-  '',
-);
+// RELEASE_VERSION covers workflow_dispatch and release/v* branch runs,
+// where GITHUB_REF_NAME is not the release tag.
+const version = (process.env.RELEASE_VERSION ?? process.env.GITHUB_REF_NAME ?? '0.0.0')
+  .replace(/^release\//, '')
+  .replace(/^v/, '');
 const channel = version.includes('-beta')
   ? 'beta'
   : version.includes('-nightly')
