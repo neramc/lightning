@@ -147,8 +147,32 @@ jobs:
       - name: Run E2E (Linux, under Xvfb)
         if: runner.os == 'Linux'
         run: xvfb-run --auto-servernum pnpm e2e
+      - name: Install msedgedriver matching the WebView2 runtime (Windows)
+        if: runner.os == 'Windows'
+        # The runner's preinstalled msedgedriver tracks Edge, but tauri apps
+        # run on the WebView2 runtime, which lags behind — a driver/browser
+        # major-version mismatch aborts session creation.
+        shell: pwsh
+        run: |
+          $dir = 'C:\Program Files (x86)\Microsoft\EdgeWebView\Application'
+          $wv2 = (Get-ChildItem $dir -Directory |
+            Where-Object Name -match '^\d+(\.\d+)+$' |
+            Sort-Object { [version]$_.Name } -Descending |
+            Select-Object -First 1).Name
+          Write-Host "WebView2 runtime: $wv2"
+          try {
+            Invoke-WebRequest "https://msedgedriver.microsoft.com/$wv2/edgedriver_win64.zip" -OutFile edgedriver.zip
+          } catch {
+            $major = $wv2.Split('.')[0]
+            $txt = (Invoke-WebRequest "https://msedgedriver.microsoft.com/LATEST_RELEASE_${major}_WINDOWS").Content -replace "`0", ''
+            $ver = ([regex]'\d+\.\d+\.\d+\.\d+').Match($txt).Value
+            Write-Host "Exact driver missing; using latest for major ${major}: $ver"
+            Invoke-WebRequest "https://msedgedriver.microsoft.com/$ver/edgedriver_win64.zip" -OutFile edgedriver.zip
+          }
+          Expand-Archive edgedriver.zip -DestinationPath "$env:RUNNER_TEMP\edgedriver" -Force
+          "TAURI_NATIVE_DRIVER=$env:RUNNER_TEMP\edgedriver\msedgedriver.exe" >> $env:GITHUB_ENV
       - name: Run E2E (Windows)
         if: runner.os == 'Windows'
-        # wdio.conf.ts hands the runner's preinstalled msedgedriver
-        # ($env:EDGEWEBDRIVER) to tauri-driver as --native-driver.
+        # wdio.conf.ts hands TAURI_NATIVE_DRIVER to tauri-driver
+        # as --native-driver.
         run: pnpm e2e

@@ -7,6 +7,7 @@ description = "macOS implementation of the Lightning platform layer (AppKit / Ap
 version.workspace = true
 edition.workspace = true
 license.workspace = true
+publish = false
 authors.workspace = true
 repository.workspace = true
 

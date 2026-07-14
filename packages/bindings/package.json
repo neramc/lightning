@@ -17,6 +17,7 @@
   },
   "devDependencies": {
     "@lightning/config": "workspace:*",
+    "eslint": "^9.30.0",
     "typescript": "^5.8.0"
   }
 }

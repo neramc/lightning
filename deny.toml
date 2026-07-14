@@ -33,9 +33,23 @@ confidence-threshold = 0.9
 [bans]
 multiple-versions = "warn"
 wildcards = "deny"
+# Workspace crates reference each other by path without a version; they are
+# all publish = false, so this only exempts internal path dependencies.
+allow-wildcard-paths = true
 
 [advisories]
 yanked = "deny"
+# Only flag unmaintained crates the workspace depends on directly. The
+# Tauri/wry stack pulls transitively unmaintained crates (gtk3 bindings,
+# unic-*, instant, proc-macro-error) with no safe upgrade available.
+unmaintained = "workspace"
+ignore = [
+  # quick-xml 0.39 is reachable only through wayland-scanner, a build-time
+  # code generator that parses trusted vendored Wayland protocol XML — never
+  # attacker-controlled input. No semver-compatible upgrade exists yet.
+  { id = "RUSTSEC-2026-0194", reason = "build-time only via wayland-scanner; input is vendored protocol XML" },
+  { id = "RUSTSEC-2026-0195", reason = "build-time only via wayland-scanner; input is vendored protocol XML" },
+]
 
 [sources]
 unknown-registry = "deny"

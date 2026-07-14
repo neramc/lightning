@@ -7,6 +7,7 @@ description = "Trigger trait, event bus, scheduler, and built-in automation trig
 version.workspace = true
 edition.workspace = true
 license.workspace = true
+publish = false
 authors.workspace = true
 repository.workspace = true
 

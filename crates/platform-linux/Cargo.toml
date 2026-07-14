@@ -7,6 +7,7 @@ description = "Linux implementation of the Lightning platform layer (X11 / Wayla
 version.workspace = true
 edition.workspace = true
 license.workspace = true
+publish = false
 authors.workspace = true
 repository.workspace = true
 

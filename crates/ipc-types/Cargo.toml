@@ -7,6 +7,7 @@ description = "specta-annotated IPC types — the single source of truth for the
 version.workspace = true
 edition.workspace = true
 license.workspace = true
+publish = false
 authors.workspace = true
 repository.workspace = true
 
