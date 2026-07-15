@@ -8,10 +8,8 @@
     <RootNamespace>Lightning.Deploy.Core</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <!-- 5.0.0 is this package's final stable release — from .NET 6 the API
-         ships in-box only for net*-windows TFMs, and this library targets
-         plain net10.0. -->
-    <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
+    <!-- Registry APIs are in-box on .NET 10 (Microsoft.Win32.Registry is on
+         the SDK's prune list — referencing it trips NU1510). -->
     <!-- Ed25519 + Blake2b for minisign verification (MIT — GPL-compatible). -->
     <PackageReference Include="NSec.Cryptography" Version="25.4.0" />
   </ItemGroup>
